@@ -249,14 +249,11 @@ public class Assembler {
     //    3     4(5)
     public void sw(String[] parameters) {
     	 int r1=get_register(parameters[0]);
-         if(r1>=memory_address)
-         {//md const value get the first address in memory=100000
-             r1=memory.memorydata[r1-memory_address]; //md const value get the first address in memory=100000
-         }
          
-         String len=""+parameters[1].charAt(0);
-         String temp=""+parameters[1].charAt(2)+parameters[1].charAt(3)+parameters[1].charAt(4);
-         int r2=get_register(temp)+Integer.parseInt(len)/4;
+         String len=""+parameters[1].charAt(0); //the number of bytes
+         String temp=""+parameters[1].charAt(2)+parameters[1].charAt(3)+parameters[1].charAt(4); // the register 4($s0)
+        
+         int r2=get_register(temp)+Integer.parseInt(len)/4;  //calculat the memory index
        
          //  System.out.println(r1+"  "+r2+"  "+len);
 
