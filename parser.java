@@ -3,6 +3,7 @@ import com.sun.deploy.util.StringUtils;
 import org.omg.CosNaming.IstringHelper;
 
 import javax.swing.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -14,36 +15,38 @@ public class parser
     public Assembler assem = new Assembler();
     public String[] parameters = new String[3];
     private HashMap<String, Integer> operations = new HashMap<>();
+    static int i = 0;
 
 
     public parser()
     {
+       
         /**********************************************With 2 Parameters************************************************/
-        operations.put("lw", 2);
-        operations.put("sw", 2);
-        operations.put("lui", 2);
+        operations.put("lw", 2);//Register     offset(R)
+        operations.put("sw", 2);//Register    offset(R)
+        operations.put("lui", 2);//Register     Constant
 
         /**********************************************With 3 Parameters************************************************/
-        operations.put("add", 3);
-        operations.put("addi", 3);
+        operations.put("add", 3);//Register     Register        Register
+        operations.put("addi", 3);//Register     Register        Constant
 
-        operations.put("and", 3);
-        operations.put("andi", 3);
+        operations.put("and", 3);//Register     Register        Register
+        operations.put("andi", 3);//Register     Register       Constant
 
-        operations.put("beq", 3);
-        operations.put("bne ", 3);
+        operations.put("beq", 3);//Register     Register        offset
+        operations.put("bne ", 3);//Register     Register       offset
 
-        operations.put("sub", 3);
+        operations.put("sub", 3);//Register     Register       Register
 
-        operations.put("or", 3);
-        operations.put("ori", 3);
+        operations.put("or", 3);//Register     Register       Register
+        operations.put("ori", 3);//Register     Register      Constant
 
-        operations.put("sll", 3);
-        operations.put("slt", 3);
-        operations.put("slti", 3);
+        operations.put("sll", 3);//Register     Register      Shiftamount
+        operations.put("slt", 3);//Register     Register       Register
+        operations.put("slti", 3);//Register     Register      Constant
         /**********************************************With 1 Parameters************************************************/
-        operations.put("jr", 1);
-        operations.put("j", 1);
+        operations.put("jr", 1);//Address
+        operations.put("j", 1);//Address
 
         /**********************************************With 0 Parameters************************************************/
         operations.put("label", 0);
@@ -59,21 +62,23 @@ public class parser
         {
     /**********************************************With 3 Parameters************************************************/
             case "add" :
+                System.out.println("Arrived Add Switch Case !!");
+
                 String[] arr = {tst[1],tst[2],tst[3]};
                 assem.add(arr);
                 break;
             case "addi" :
                 String[] arr2 = {tst[1],tst[2],tst[3]};
-                //assem.addi(arr2);
+                assem.addi(arr2);
                 break;
             case "sub" :
                 String[] arr3 = {tst[1],tst[2],tst[3]};
-                //   assem.lw(arr3);
+               //  assem.lw(arr3);
                 break;
 
             case "bne" :
                 String[] arr9 = {tst[1],tst[2],tst[3]};
-                //  assem.bne(arr9);
+              //  assem.bne(arr9);
                 break;
             case "beq" :
                 String[] arr10 = {tst[1],tst[2],tst[3]};
@@ -82,11 +87,11 @@ public class parser
 
             case "and" :
                 String[] arr0 = {tst[1],tst[2] , tst[3]};
-                //assem.and(arr0);
+                assem.and(arr0);
                 break;
             case "andi" :
                 String[] arr12 = {tst[1],tst[2] , tst[3]};
-                //  assem.andi(arr12);
+                  assem.andi(arr12);
                 break;
 
             case "or" :
@@ -100,11 +105,11 @@ public class parser
 
             case "slti" :
                 String[] arr6 = {tst[1],tst[2],tst[3]};
-                // assem.slti(arr6);
+                assem.slti(arr6);
                 break;
             case "slt" :
                 String[] arr7 = {tst[1],tst[2],tst[3]};
-                //  assem.slt(arr7);
+                  assem.slt(arr7);
             case "sll" :
                 String[] arr8 = {tst[1],tst[2],tst[3]};
                 //   assem.sll(arr8);
@@ -112,7 +117,7 @@ public class parser
     /**********************************************With 2 Parameters************************************************/
             case "sw" :
                 String[] arr4 = {tst[1],tst[2]};
-                //  assem.sw(arr4);
+                  assem.sw(arr4);
                 break;
             case "lui" :
                 String[] arr5 = {tst[1],tst[2]};
@@ -120,12 +125,12 @@ public class parser
                 break;
             case "lw" :
                 String[] arr15 = {tst[1],tst[2]};
-                //  assem.sw(arr4);
+                 // assem.lw(arr4);
                 break;
     /**********************************************With 1 Parameters************************************************/
             case "jr" :
                 String[] arr14 = {tst[1]};
-                //  assem.jr(arr14);
+               //  assem.jr(arr14);
                 break;
             case "j" :
                 String[] arr17 = {tst[1]};
@@ -142,29 +147,51 @@ public class parser
 
     public void Validate(ArrayList<String>tst)
     {
-        int counter = 0;
         String Line;
-        for (int i = 0; i < tst.size(); i++)
+        for ( i = 0; i < tst.size(); i++)
         {
+            int counter = 0;
             Line = tst.get(i); //FirstLine add $t0 $s1 $0
+           //System.out.println("From Validate Line: " + Line);
             String[] strarr = Line.split(" ");
+            //System.out.println("From Validate strarr: " + Arrays.toString(strarr));
             String x  = strarr[0];//add
             if(operations.containsKey(x))//Check Instruction Exsitance.
             {
                 int nom_of_arguments = operations.get(x);
                 int len = strarr.length-1;
+               // System.out.println("From Validate len " + len + "      From Validate len " + nom_of_arguments);
                 if(nom_of_arguments != len)//Check Number of Arguments.
                 {
-                    System.out.println ("Error in line" + i + " : " + x + " Takes " +operations.get( x)+" Arguments.");
+                    System.out.println ("\nError in line" + i + " : " + x + " Takes " +operations.get( x)+" Arguments.\n");
                 }
+
                 else// if(nom_of_arguments == len) // Check Arguments Validation.
                 {
-                    /*here*/
+                    if(nom_of_arguments == 3)
+                    {
+                        check_3_ArgumentsValidation( nom_of_arguments ,  x ,  strarr ,  Line);
+                    }
+                    else if (nom_of_arguments == 2)
+                    {
+                        check_2_ArgumentsValidation(  nom_of_arguments ,  x ,  strarr ,  Line);
+                    }
+                    else if (nom_of_arguments == 1)
+                    {
+                        if((strarr[1].equals("j") || strarr[1].equals("jr")) && isAddress(strarr[2]))
+                        {
+                            parse(Line);
+                        }
+                    }
+                    else//For labels.
+                    {
+
+                    }
                 }
             }
             else
             {
-                System.out.println("Error in line " + i + "Check Instruction name.");
+                System.out.println("\nError in line " + i + "  Check Instruction name.\n");
             }
         }
     }
@@ -182,15 +209,22 @@ public class parser
             strvalid = true;
             return true;
         }
+
+       // System.out.println("Whta about zero register : " + s.charAt(0));
+
         //Zero Register || $ char nom
-       if(((s.charAt(0) == '$') && !Character.isLetter(s.charAt(1)) ) )
+       if(((s.charAt(0) == '$')  ) ) //&& !Character.isLetter(s.charAt(1)
        {
-           s=s.substring(0,1);
+           s=s.substring(1);
+
+           //System.out.println("From chaeckregistervalidation s after $ " + s);
+
            char c = s.charAt(0);
 
            if( s.charAt(0) == 'v' || s.charAt(0) == 'a' || s.charAt(0) == 't' || s.charAt(0) == 's' || s.charAt(0) == 'k')
            {
-               s=s.substring(0,1);
+               //System.out.println("here");
+               s=s.substring(1);
 
                if(Valid0_1(s , c) || Valid0_3(s,c) || Valid0_7(s,c) || Valid0_9(s,c))
                {
@@ -198,6 +232,7 @@ public class parser
                }
            }
        }
+
        return false;
     }
 
@@ -245,5 +280,158 @@ public class parser
         return false;
     }
 
+
+    public boolean isNumber(String t)
+    {
+        try
+        {
+            int constant = Integer.parseInt(t);
+            return true;
+        }
+        catch (NumberFormatException o)
+        {
+            return false;
+        }
+    }
+
+
+    public boolean isOffset(String t)
+    {
+        if(isNumber(t) ) {
+            int x = Integer.parseInt(t);
+            if (x % 4 == 0 || x == 0) {
+                return true;
+            }
+        }
+            return false;
+    }
+
+
+
+    public void check_3_ArgumentsValidation( int nom_of_arguments , String x ,  String[] strarr , String Line)
+    {
+        int counter = 0;
+        if((x.equals("or") || x.equals("and") || x.equals("add") || x.equals("sub") || x.equals("slt") )) {
+            for (int j = 0; j < nom_of_arguments; j++)//0 1 2
+            {
+                if(CheckRegisterValidation(strarr[j+1])) // 1 2 3
+                {
+                    counter++;
+                }
+            }
+            //   System.out.println("From Validate Counter :  " + counter);
+            if(counter != nom_of_arguments)
+            {
+                System.out.println("\nError in line " + i + "  Check Instruction arguments.\n");
+            }
+            else
+                parse(Line);
+        }
+
+
+        //3 Arguments---->Register      Register        Contant
+        else if((x.equals("ori") || x.equals("andi") || x.equals("addi") || x.equals("slti") )) {
+            for (int j = 0; j < nom_of_arguments-1; j++)//0 1 2
+            {
+                if(CheckRegisterValidation(strarr[j+1])) // 1 2 3
+                {
+                    counter++;
+                }
+            }
+
+            //   System.out.println("From Validate Counter :  " + counter);
+            if(counter == nom_of_arguments-1 && isNumber(strarr[3]))
+            {
+                parse(Line);
+            }
+            else
+                System.out.println("\nError in line " + i + "  Check Instruction arguments.\n");
+
+        }
+
+
+        //3 Arguments---->Register      Register        offset
+        else if((x.equals("beq") || x.equals("bne")) )
+        {
+            for (int j = 0; j < nom_of_arguments-1; j++)//0 1 2
+            {
+                if(CheckRegisterValidation(strarr[j+1])) // 1 2 3
+                {
+                    counter++;
+                }
+            }
+            //   System.out.println("From Validate Counter :  " + counter);
+            if(counter == nom_of_arguments-1 && isOffset(strarr[3]))
+            {
+                parse(Line);
+            }
+            else
+                System.out.println("\nError in line " + i + "  Check Instruction arguments.\n");
+        }
+        else if (x.equals("sll"))
+        {
+            if(CheckRegisterValidation(strarr[1]) && CheckRegisterValidation(strarr[2]) && isNumber(strarr[3]))
+            {
+                parse(Line);
+            }
+            else
+                System.out.println("\nError in line " + i + "  Check Instruction arguments.\n");
+
+        }
+    }
+
+    public void check_2_ArgumentsValidation( int nom_of_arguments , String x ,  String[] strarr , String Line)
+    {
+        int counter = 0;
+
+        if((x.equals("lui")) )
+        {
+            //System.out.println(strarr[2]);
+              if(CheckRegisterValidation(strarr[1]) && isNumber(strarr[2]))
+              {
+                //  System.out.println(strarr[2]);
+                  parse(Line);
+              }
+              //   System.out.println("From Validate Counter :  " + counter);
+              else
+                System.out.println("\nError in line " + i + "  Check Instruction arguments.\n");
+
+        }
+
+        if((x.equals("sw") || x.equals("lw")) )
+        {
+            if(CheckRegisterValidation(strarr[1]) && isOffset(strarr[2]))
+            {
+                parse(Line);
+            }
+            else
+                System.out.println("\nError in line " + i + "  Check Instruction arguments.\n");
+        }
+
+    }
+
+
+//    public boolean CheckShiftamountValidation(String x)
+//    {
+//
+////        if()
+////        {
+////            return true;
+////        }
+////        return false;
+//    }
+
+    public boolean isAddress(String x)
+    {
+        if(isNumber(x) )
+        {
+            int address = Integer.parseInt(x);
+            if(address <= 100000)
+                return true;
+        }
+        return false;
+    }
+
 }
+
 
