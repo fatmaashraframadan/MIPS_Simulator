@@ -1,7 +1,3 @@
-//package assemblersim;
-
-import java.lang.reflect.Parameter;
-
 public class Assembler {
     final static int memory_address=100000;
     static registers r=new registers();
@@ -221,11 +217,11 @@ public class Assembler {
         //for memory
         if(r1>=memory_address)
         {//md const value get the first address in memory=100000
-            r1=memory.memorydata.get(r1-memory_address); //md const value get the first address in memory=100000
+            r1= memory.memorydata[r1-memory_address]; //md const value get the first address in memory=100000
         }
         if(r2>=memory_address)
         {
-            r2=memory.memorydata.get(r2-memory_address);
+            r2=memory.memorydata[r1-memory_address];
         }
 
         set_register(parameters[0], r1+r2);
@@ -235,5 +231,36 @@ public class Assembler {
     }
 
     public void sub(String[] parameters) {
+    }
+    // add $t0 $s1 5
+    // add $t0 $0 3
+    public void addi(String[] parameters) {
+    	 int r1=get_register(parameters[1]);
+         if(r1>=memory_address)
+         {//md const value get the first address in memory=100000
+             r1=memory.memorydata[r1-memory_address]; //md const value get the first address in memory=100000
+         }
+         
+         set_register(parameters[0], r1+Integer.parseInt( parameters[2]));
+
+    }
+
+    //sw $s0, 4($s1)
+    //    3     4(5)
+    public void sw(String[] parameters) {
+    	 int r1=get_register(parameters[0]);
+         if(r1>=memory_address)
+         {//md const value get the first address in memory=100000
+             r1=memory.memorydata[r1-memory_address]; //md const value get the first address in memory=100000
+         }
+         
+         String len=""+parameters[1].charAt(0);
+         String temp=""+parameters[1].charAt(2)+parameters[1].charAt(3)+parameters[1].charAt(4);
+         int r2=get_register(temp)+Integer.parseInt(len)/4;
+       
+         //  System.out.println(r1+"  "+r2+"  "+len);
+
+         memory.memorydata[r2]=r1;
+         
     }
 }
