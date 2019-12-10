@@ -229,9 +229,6 @@ public class Assembler {
         System.out.println(get_register("Result : " + parameters[0]));
 
     }
-
-    public void sub(String[] parameters) {
-    }
     // add $t0 $s1 5
     // add $t0 $0 3
     public void addi(String[] parameters) {
