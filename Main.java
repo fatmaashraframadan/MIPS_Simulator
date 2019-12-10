@@ -12,9 +12,16 @@ public class Main {
 
         registers.r_$s0=memory_address+1; //memory of index 1s
         registers.r_$s1=5;
-        memory.memorydata.add(30);
-        memory.memorydata.add(60);
+       // memory.memorydata.add(30);
+        //memory.memorydata.add(60);
         Assembler a=new Assembler();
+
+        Assembler.set_register("$s1" , 20 );
+        Assembler.set_register("$s2" , 30 );
+        Assembler.set_register("$s3" , 40 );
+        Assembler.set_register("$t1" , 50 );
+        Assembler.set_register("$t1" , 60 );
+
 
 
         System.out.println("Enter your Code : ");
@@ -23,13 +30,14 @@ public class Main {
         ArrayList<String>s = new ArrayList<>();
         while (scan.hasNextLine())//Write ctrl + d to stop taking input.
         {
-             pass = scan.nextLine();
-             s.add(pass);
+            pass = scan.nextLine();
+            s.add(pass);
         }
         parser p = new parser();
 
         System.out.println(s);
         p.Validate(s);
+
 
 //
 //        String[] parameters = new String[3];
