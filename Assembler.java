@@ -229,6 +229,9 @@ public class Assembler {
         System.out.println(get_register("Result : " + parameters[0]));
 
     }
+
+    public void sub(String[] parameters) {
+    }
     // add $t0 $s1 5
     // add $t0 $0 3
     public void addi(String[] parameters) {
@@ -250,18 +253,27 @@ public class Assembler {
          String len=""+parameters[1].charAt(0);
          String temp=""+parameters[1].charAt(2)+parameters[1].charAt(3)+parameters[1].charAt(4);
          int r2=get_register(temp)+Integer.parseInt(len)/4;
-       
-           System.out.println(r1+"  "+r2+"  "+len);
-
+         if(r2>=memory_address) {
+        	 r2=r2-memory_address;//md const value get the first address in memory=100000
+         }
+    
+         System.out.println(r1+"  "+r2+"  "+len);
          memory.memorydata[r2]=r1;
          
     }
     public void and(String[] parameters) { //not finished yet
-   	 int r1=get_register(parameters[0]);
+   	 int r1=get_register(parameters[1]);
         
-     int r2=get_register(parameters[1]);
-      
-          System.out.println(r1+"  "+r2);
+     int r2=get_register(parameters[2]);
+     if(r1>=memory_address)
+     {//md const value get the first address in memory=100000
+         r1=memory.memorydata[r1-memory_address]; //md const value get the first address in memory=100000
+     }
+     if(r2>=memory_address)
+     {//md const value get the first address in memory=100000
+         r2=memory.memorydata[r2-memory_address]; //md const value get the first address in memory=100000
+     }
+          //System.out.println(r1+"  "+r2);
           
         set_register(parameters[0], r1&r2);
    }
