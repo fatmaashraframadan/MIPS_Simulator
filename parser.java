@@ -14,26 +14,35 @@ public class parser
 
     public parser()
     {
-        operations.put("lw", 3);
-        operations.put("sw", 3);
+        /**********************************************With 2 Parameters************************************************/
+        operations.put("lw", 2);
+        operations.put("sw", 2);
+        operations.put("lui", 2);
+
+        /**********************************************With 3 Parameters************************************************/
         operations.put("add", 3);
         operations.put("addi", 3);
-        operations.put("sub", 3);
+
+        operations.put("and", 3);
+        operations.put("andi", 3);
+
         operations.put("beq", 3);
         operations.put("bne ", 3);
+
+        operations.put("sub", 3);
+
+        operations.put("or", 3);
+        operations.put("ori", 3);
+
         operations.put("sll", 3);
         operations.put("slt", 3);
         operations.put("slti", 3);
-        operations.put("lui", 3);
 
-        operations.put("and", 2);
-        operations.put("or", 2);
-        operations.put("andi", 2);
-        operations.put("ori", 2);
-
+        /**********************************************With 1 Parameters************************************************/
         operations.put("jr", 1);
         operations.put("j", 1);
 
+        /**********************************************With 0 Parameters************************************************/
         operations.put("label", 0);
     }
 
@@ -51,27 +60,48 @@ public class parser
             {
                 switch(key)
                 {
+        /**********************************************With 3 Parameters************************************************/
+
                     case "add" :
                         String[] arr = {tst[1],tst[2],tst[3]};
-                        System.out.println(Arrays.toString(arr));
                         assem.add(arr);
-                        System.out.println("Done");
+                        break;
+                    case "addi" :
+                        String[] arr2 = {tst[1],tst[2],tst[3]};
+                        //assem.addi(arr2);
                         break;
                     case "sub" :
-                        String[] arr2 = {tst[1],tst[2],tst[3]};
-                        assem.sub(arr2);
-                    case "lw" :
                         String[] arr3 = {tst[1],tst[2],tst[3]};
                         //   assem.lw(arr3);
                         break;
-                    case "sw" :
-                        String[] arr4 = {tst[1],tst[2],tst[3]};
-                        //  assem.sw(arr4);
+
+                    case "bne" :
+                        String[] arr9 = {tst[1],tst[2],tst[3]};
+                        //  assem.bne(arr9);
                         break;
-                    case "lui" :
-                        String[] arr5 = {tst[1],tst[2],tst[3]};
-                        //assem.lui(arr5);
+                    case "beq" :
+                        String[] arr10 = {tst[1],tst[2],tst[3]};
+                        //assem.beq(arr10);
                         break;
+
+                    case "and" :
+                        String[] arr0 = {tst[1],tst[2] , tst[3]};
+                        //assem.and(arr0);
+                        break;
+                    case "andi" :
+                        String[] arr12 = {tst[1],tst[2] , tst[3]};
+                        //  assem.andi(arr12);
+                        break;
+
+                    case "or" :
+                        String[] arr11 = {tst[1],tst[2] , tst[3]};
+                        //   assem.or(arr11);
+                        break;
+                    case "ori" :
+                        String[] arr13 = {tst[1],tst[2] , tst[3]};
+                        //  assem.ori(arr13);
+                        break;
+
                     case "slti" :
                         String[] arr6 = {tst[1],tst[2],tst[3]};
                         // assem.slti(arr6);
@@ -83,39 +113,31 @@ public class parser
                         String[] arr8 = {tst[1],tst[2],tst[3]};
                         //   assem.sll(arr8);
                         break;
-                    case "bne" :
-                        String[] arr9 = {tst[1],tst[2],tst[3]};
-                        //  assem.bne(arr9);
-                        break;
-                    case "beq" :
-                        String[] arr10 = {tst[1],tst[2],tst[3]};
-                        //assem.beq(arr10);
-                        break;
 
-                    case "and" :
-                        String[] arr0 = {tst[1],tst[2]};
-                        //assem.and(arr0);
-                    case "or" :
-                        String[] arr11 = {tst[1],tst[2]};
-                        //   assem.or(arr11);
-                        break;
-                    case "andi" :
-                        String[] arr12 = {tst[1],tst[2]};
-                        //  assem.andi(arr12);
-                        break;
-                    case "ori" :
-                        String[] arr13 = {tst[1],tst[2]};
-                        //  assem.ori(arr13);
-                        break;
 
+        /**********************************************With 2 Parameters************************************************/
+                    case "sw" :
+                        String[] arr4 = {tst[1],tst[2]};
+                        //  assem.sw(arr4);
+                        break;
+                    case "lui" :
+                        String[] arr5 = {tst[1],tst[2]};
+                        //assem.lui(arr5);
+                        break;
+                    case "lw" :
+                        String[] arr15 = {tst[1],tst[2]};
+                        //  assem.sw(arr4);
+                        break;
+        /**********************************************With 1 Parameters************************************************/
                     case "jr" :
                         String[] arr14 = {tst[1]};
                         //  assem.jr(arr14);
                         break;
                     case "j" :
-                        String[] arr15 = {tst[1]};
+                        String[] arr17 = {tst[1]};
                         //  assem.j(arr15);
                         break;
+        /**********************************************With 0 Parameters************************************************/
                     case "label" :
                        // String[] arr16 = {tst[1]};
                         //  assem.j(arr16);
@@ -141,6 +163,16 @@ public class parser
             parse(x);
         }
     }
+    
+   /* public boolean CheckValidation(String[] arr)
+    {
+        for(int i = 0 ; i < arr.length ; i++)
+        {
+
+        }
+    }*/
 
 }
+
+
 
