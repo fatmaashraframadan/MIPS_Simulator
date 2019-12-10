@@ -3,5 +3,5 @@
 import java.util.ArrayList;
 
 public class memory {
-    static ArrayList<Integer> memorydata=new ArrayList<Integer>();
+   static int[] memorydata=new int[100000];
 }
