@@ -91,11 +91,11 @@ public class parser
 
             case "and" :
                 String[] arr0 = {tst[1],tst[2] , tst[3]};
-                assem.and(arr0);
+             //   assem.and(arr0);
                 break;
             case "andi" :
                 String[] arr12 = {tst[1],tst[2] , tst[3]};
-                  assem.andi(arr12);
+             //     assem.andi(arr12);
                 break;
 
             case "or" :
@@ -109,11 +109,11 @@ public class parser
 
             case "slti" :
                 String[] arr6 = {tst[1],tst[2],tst[3]};
-                assem.slti(arr6);
+                //assem.slti(arr6);
                 break;
             case "slt" :
                 String[] arr7 = {tst[1],tst[2],tst[3]};
-                  assem.slt(arr7);
+              //    assem.slt(arr7);
             case "sll" :
                 String[] arr8 = {tst[1],tst[2],tst[3]};
                 //   assem.sll(arr8);
