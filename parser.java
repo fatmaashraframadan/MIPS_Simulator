@@ -314,9 +314,21 @@ public class parser
 
     public boolean isOffsetsw_lw(String t)
     {
+        System.out.println("t : "+t + " "+t.length());
         String x ="";
         x+=t.charAt(0);
-        if(isNumber(x) && t.charAt(1) =='(' && t.charAt(2) == '$'  && t.charAt(5) ==')')//8($s0)
+        if(t.length() == 5&& isNumber(x) && t.charAt(1) =='(' && t.charAt(2) == '$'  && t.charAt(4) ==')')
+        {
+            String s = "";
+            s+=t.charAt(2);//$s0
+            s+=t.charAt(3);
+
+            if(CheckRegisterValidation(s))
+            {
+                return true;
+            }
+        }
+       else if(t.length() == 6 && isNumber(x) && t.charAt(1) =='(' && t.charAt(2) == '$'  && t.charAt(5) ==')')//8($s0)
         {
             String s = "";
             s+=t.charAt(2);//$s0
@@ -436,6 +448,15 @@ public class parser
     }
 
 
+//    public boolean CheckShiftamountValidation(String x)
+//    {
+//
+////        if()
+////        {
+////            return true;
+////        }
+////        return false;
+//    }
 
     public boolean isAddress(String x)
     {
