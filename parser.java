@@ -17,10 +17,13 @@ public class parser
     private HashMap<String, Integer> operations = new HashMap<>();
     static int i = 0;
 
+//    ArrayList<String>AllRegisters3 = new ArrayList<>();
+//    ArrayList<String>A
 
     public parser()
     {
-       
+        //Arguments 3 and Registers.
+        //AllRegisters3.add();
         /**********************************************With 2 Parameters************************************************/
         operations.put("lw", 2);//Register     offset(R)
         operations.put("sw", 2);//Register    offset(R)
@@ -53,6 +56,7 @@ public class parser
     }
 
 
+    //add $t0 $s0 $0
     public void parse(String line)
     {
         String[] tst = line.split(" ");
@@ -62,7 +66,7 @@ public class parser
         {
     /**********************************************With 3 Parameters************************************************/
             case "add" :
-                System.out.println("Arrived Add Switch Case !!");
+                //System.out.println("Arrived Add Switch Case !!");
 
                 String[] arr = {tst[1],tst[2],tst[3]};
                 assem.add(arr);
@@ -297,13 +301,34 @@ public class parser
 
     public boolean isOffset(String t)
     {
-        if(isNumber(t) ) {
+        if(isNumber(t) )
+        {
             int x = Integer.parseInt(t);
             if (x % 4 == 0 || x == 0) {
                 return true;
             }
         }
             return false;
+    }
+
+
+    public boolean isOffsetsw_lw(String t)
+    {
+        String x ="";
+        x+=t.charAt(0);
+        if(isNumber(x) && t.charAt(1) =='(' && t.charAt(2) == '$'  && t.charAt(5) ==')')//8($s0)
+        {
+            String s = "";
+            s+=t.charAt(2);//$s0
+            s+=t.charAt(3);
+            s+=t.charAt(4);
+            if(CheckRegisterValidation(s))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
@@ -400,7 +425,7 @@ public class parser
 
         if((x.equals("sw") || x.equals("lw")) )
         {
-            if(CheckRegisterValidation(strarr[1]) && isOffset(strarr[2]))
+            if(CheckRegisterValidation(strarr[1]) && isOffsetsw_lw(strarr[2]))
             {
                 parse(Line);
             }
@@ -411,15 +436,6 @@ public class parser
     }
 
 
-//    public boolean CheckShiftamountValidation(String x)
-//    {
-//
-////        if()
-////        {
-////            return true;
-////        }
-////        return false;
-//    }
 
     public boolean isAddress(String x)
     {
