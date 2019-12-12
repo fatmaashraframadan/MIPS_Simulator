@@ -316,7 +316,7 @@ public class Assembler {
      
         int r1=get_register(parameters[1]);
         int r2=get_register(parameters[2]);
-        System.out.println(r1+"  "+r2);
+        //System.out.println(r1+"  "+r2);
 
         //for memory
         if(r1>=memory_address)
@@ -330,7 +330,7 @@ public class Assembler {
 
         set_register(parameters[0], r1+r2);
 
-        System.out.println("Result : " + get_register(parameters[0]));
+       // System.out.println("Result : " + get_register(parameters[0]));
 
         String machine="";
         machine="000000"+" "+get_register_number(parameters[0])+" "+get_register_number(parameters[1])+" "+get_register_number(parameters[2])+" "+"00000"+" "+"100000";
@@ -377,7 +377,7 @@ public class Assembler {
         	 r2=r2-memory_address;//md const value get the first address in memory=100000
          }
     
-         System.out.println(r1+"  "+r2+"  "+len);
+         //System.out.println(r1+"  "+r2+"  "+len);
          memory.memorydata[r2]=r1;
          
          int offist=Integer.parseInt(len);
@@ -397,6 +397,8 @@ public class Assembler {
          System.out.println("machine code is : " +machine);
 
     }
+    
+    
     public void and(String[] parameters) { //not finished yet
    	 int r1=get_register(parameters[1]);
         
@@ -412,6 +414,11 @@ public class Assembler {
           //System.out.println(r1+"  "+r2);
           
         set_register(parameters[0], r1&r2);
+        
+        String machine="";
+        machine="00000"+" "+get_register_number(parameters[0])+" "+get_register_number(parameters[1])+" "+get_register_number(parameters[2])+" "+"00000"+" "+"100100";
+        System.out.println("machine code is : " +machine);
+
    }
     // add $t0 $s1 5
     // add $t0 $0 3
@@ -421,11 +428,28 @@ public class Assembler {
          {//md const value get the first address in memory=100000
              r1=memory.memorydata[r1-memory_address]; //md const value get the first address in memory=100000
          }
-         System.out.println(r1+"  "+Integer.parseInt(parameters[2]));
+        // System.out.println(r1+"  "+Integer.parseInt(parameters[2]));
+         int constant=Integer.parseInt(parameters[2]);
+         set_register(parameters[0], r1&constant);
+         
+         String c="";
+         for (int i = 0; i < 16; i++) {
+			if(constant%2==0) {
+				c="0"+c;
+			}
+			else
+			{
+				c="1"+c;
+			}
+			constant/=2;
+		}
+         String machine="";
+         machine="001100"+" "+get_register_number(parameters[1])+" "+get_register_number(parameters[0])+" "+c;
+         System.out.println("machine code is : " +machine);
 
-         set_register(parameters[0], r1&Integer.parseInt(parameters[2]));
 
     }
+    
     public void slt(String[] parameters) {
    	 int r1=get_register(parameters[1]);
    	int r2=get_register(parameters[2]);
@@ -437,7 +461,7 @@ public class Assembler {
         {//md const value get the first address in memory=100000
             r2=memory.memorydata[r2-memory_address]; //md const value get the first address in memory=100000
         }
-        System.out.println(r1+"  "+r2);
+       // System.out.println(r1+"  "+r2);
         if(r1>r2) {
             set_register(parameters[0],1);
         }
@@ -445,21 +469,44 @@ public class Assembler {
         {
         	 set_register(parameters[0],0);
         }
+        String machine="";
+        machine="000000"+" "+get_register_number(parameters[0])+" "+get_register_number(parameters[1])+" "+get_register_number(parameters[2])+" "+"00000"+" "+"101010";
+        System.out.println("machine code is : " +machine);
+
    }
+   
     public void slti(String[] parameters) {
    	 int r1=get_register(parameters[1]);
         if(r1>=memory_address)
         {//md const value get the first address in memory=100000
             r1=memory.memorydata[r1-memory_address]; //md const value get the first address in memory=100000
         }
-        System.out.println(r1+"  "+Integer.parseInt(parameters[2]));
+        int constant=Integer.parseInt(parameters[2]);
+        //System.out.println(r1+"  "+constant);
 
-        if(r1>Integer.parseInt(parameters[2])) {
+        if(r1>constant) {
             set_register(parameters[0],1);
         }
         else
         {
         	 set_register(parameters[0],0);
         }
+        
+        String c="";
+        for (int i = 0; i < 16; i++) {
+			if(constant%2==0) {
+				c="0"+c;
+			}
+			else
+			{
+				c="1"+c;
+			}
+			constant/=2;
+		}
+        String machine="";
+        machine="001010"+" "+get_register_number(parameters[1])+" "+get_register_number(parameters[0])+" "+c;
+        System.out.println("machine code is : " +machine);
+
+
    }
 }
