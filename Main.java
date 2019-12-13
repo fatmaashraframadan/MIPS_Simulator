@@ -47,7 +47,7 @@ public class Main {
 //
 //        a.add(parameters);
         System.out.println(registers.r_$t0);
-        System.out.println(memory.memorydata[2]);
+       // System.out.println(memory.memorydata[2]);
     }
 
 }
