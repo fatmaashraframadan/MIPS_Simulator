@@ -1,10 +1,13 @@
-package assemblersim;
+//package assemblersim;
+import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.Map;
+
 
 public class Assembler {
 
     Map<String , String > register = new HashMap<>();
+
 
     static  VirtualMachine ob = new VirtualMachine();
     static String get_register_number(String parameter) {
@@ -119,8 +122,64 @@ public class Assembler {
         String machine="";
         machine="000000"+" "+get_register_number(parameters[0])+" "+get_register_number(parameters[1])+" "+get_register_number(parameters[2])+" "+"00000"+" "+"100000";
         System.out.println("machine code is : " +machine);
-       // return machine;
-       ob.add(machine);
+        // return machine;
+        ob.add(machine);
+    }
+
+    // beq $t0 $0 l
+    public void beq(String[] parameters)
+    {
+        int index =parser.Labels.get(parameters[2]);
+        String c = "";//binary of label instruction index.
+
+        //Convert decimal to binary
+        //16-bit for index
+        for (int i = 0; i < 16; i++) {
+            if(index%2==0) {
+                c="0"+c;
+            }
+            else
+            {
+                c="1"+c;
+            }
+            index/=2;
+        }
+
+        String machine="";
+
+        //6-bit opcpde ----- 5bit Rigester ------ 5bit Register ------- 16 bit
+        machine="000100"+" "+get_register_number(parameters[0])+" "+get_register_number(parameters[1])+" "+c;
+        System.out.println(machine);
+        ob.beq(machine);
+
+    }
+
+    // add $t0 $0 $0
+    public void bne(String[] parameters)
+    {
+        int index =parser.Labels.get(parameters[2]);
+        String c = "";//binary of label instruction index.
+
+        //Convert decimal to binary
+        //16-bit for index
+        for (int i = 0; i < 16; i++) {
+            if(index%2==0) {
+                c="0"+c;
+            }
+            else
+            {
+                c="1"+c;
+            }
+            index/=2;
+        }
+
+        String machine="";
+
+        //6-bit opcpde ----- 5bit Rigester ------ 5bit Register ------- 16 bit
+        machine="000101"+" "+get_register_number(parameters[0])+" "+get_register_number(parameters[1])+" "+c;
+
+        System.out.println(machine);
+        ob.bne(machine);
     }
 
 
@@ -172,68 +231,68 @@ public class Assembler {
         String machine="";
         machine="101011"+" "+get_register_number(temp)+" "+get_register_number(parameters[0])+" "+c;
         System.out.println("machine code is : " +machine);
-          ob.sw(machine);
+        ob.sw(machine);
     }
 
-    
+
     public void and(String[] parameters) { //not finished yet
-   	     String machine="";
+        String machine="";
         machine="00000"+" "+get_register_number(parameters[0])+" "+get_register_number(parameters[1])+" "+get_register_number(parameters[2])+" "+"00000"+" "+"100100";
         System.out.println("machine code is : " +machine);
-           ob.and(machine);
+        ob.and(machine);
 
-   }
+    }
     // add $t0 $s1 5
     // add $t0 $0 3
     public void andi(String[] parameters) {
 
-         int constant=Integer.parseInt(parameters[2]);
-         String c="";
-         for (int i = 0; i < 16; i++) {
-			if(constant%2==0) {
-				c="0"+c;
-			}
-			else
-			{
-				c="1"+c;
-			}
-			constant/=2;
-		}
-         String machine="";
-         machine="001100"+" "+get_register_number(parameters[1])+" "+get_register_number(parameters[0])+" "+c;
-         System.out.println("machine code is : " +machine);
-            ob.andi(machine);
+        int constant=Integer.parseInt(parameters[2]);
+        String c="";
+        for (int i = 0; i < 16; i++) {
+            if(constant%2==0) {
+                c="0"+c;
+            }
+            else
+            {
+                c="1"+c;
+            }
+            constant/=2;
+        }
+        String machine="";
+        machine="001100"+" "+get_register_number(parameters[1])+" "+get_register_number(parameters[0])+" "+c;
+        System.out.println("machine code is : " +machine);
+        ob.andi(machine);
 
     }
-    
+
     public void slt(String[] parameters) {
-   	
+
         String machine="";
         machine="000000"+" "+get_register_number(parameters[0])+" "+get_register_number(parameters[1])+" "+get_register_number(parameters[2])+" "+"00000"+" "+"101010";
         System.out.println("machine code is : " +machine);
-      ob.slt(machine);
-   }
-   
+        ob.slt(machine);
+    }
+
     public void slti(String[] parameters) {
 
         int constant=Integer.parseInt(parameters[2]);
-        
+
         String c="";
         for (int i = 0; i < 16; i++) {
-			if(constant%2==0) {
-				c="0"+c;
-			}
-			else
-			{
-				c="1"+c;
-			}
-			constant/=2;
-		}
+            if(constant%2==0) {
+                c="0"+c;
+            }
+            else
+            {
+                c="1"+c;
+            }
+            constant/=2;
+        }
         String machine="";
         machine="001010"+" "+get_register_number(parameters[1])+" "+get_register_number(parameters[0])+" "+c;
         System.out.println("machine code is : " +machine);
         ob.slti(machine);
 
-   }
+    }
 
 }
