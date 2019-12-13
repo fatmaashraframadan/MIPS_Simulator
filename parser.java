@@ -1,9 +1,5 @@
-//package assemblersim;
-import com.sun.deploy.util.StringUtils;
-import org.omg.CosNaming.IstringHelper;
+package assemblersim;
 
-import javax.swing.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -155,12 +151,12 @@ public class parser
    }
 
 
-    public void Validate()
+    public void Validate(ArrayList<String>tst)
     {
         String Line;
 
-        for (int j = 0; j < memory.memoertext.size(); j++) {
-            Line = memory.memoertext.get(j); //FirstLine add $t0 $s1 $0
+        for (int j = 0; j < tst.size(); j++) {
+            Line = tst.get(j); //FirstLine add $t0 $s1 $0
             if(Line.contains(":"))
             {
                 Line = Line.substring(0,Line.length()-1);//label
@@ -168,11 +164,13 @@ public class parser
             }
         }
 
-        for ( ; ProgramCounter < memory.memoertext.size(); ProgramCounter++)
+        for ( ; ProgramCounter < tst.size(); ProgramCounter++)
         {
-            int counter = 0;
-            Line = memory.memoertext.get(ProgramCounter); //FirstLine add $t0 $s1 $0
+        	
+           
+            Line =  tst.get(ProgramCounter); //FirstLine add $t0 $s1 $0
            //System.out.println("From Validate Line: " + Line);
+            memory.memorydata[ProgramCounter]=Line;
             String[] strarr = Line.split(" ");
             //System.out.println("From Validate strarr: " + Arrays.toString(strarr));
             String x  = strarr[0];//add
