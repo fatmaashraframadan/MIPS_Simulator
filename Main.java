@@ -15,12 +15,12 @@ public class Main {
        // memory.memorydata.add(30);
         //memory.memorydata.add(60);
         Assembler a=new Assembler();
-
-        Assembler.set_register("$s1" , 20 );
-        Assembler.set_register("$s2" , 30 );
-        Assembler.set_register("$s3" , 40 );
-        Assembler.set_register("$t1" , 50 );
-        Assembler.set_register("$t1" , 60 );
+//
+//        Assembler.set_register("$s1" , 20 );
+//        Assembler.set_register("$s2" , 30 );
+//        Assembler.set_register("$s3" , 40 );
+//        Assembler.set_register("$t1" , 50 );
+//        Assembler.set_register("$t1" , 60 );
 
 
 
@@ -31,12 +31,12 @@ public class Main {
         while (scan.hasNextLine())//Write ctrl + d to stop taking input.
         {
             pass = scan.nextLine();
-            s.add(pass);
+            memory.memoertext.add(pass);
         }
         parser p = new parser();
 
-        System.out.println(s);
-        p.Validate(s);
+       /// System.out.println(s);
+        p.Validate();
 
 
 //
@@ -47,6 +47,7 @@ public class Main {
 //
 //        a.add(parameters);
         System.out.println(registers.r_$t0);
+        System.out.println(memory.memorydata[2]);
     }
 
 }
