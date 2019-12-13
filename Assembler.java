@@ -1,3 +1,4 @@
+package assemblersim;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -125,7 +126,7 @@ public class Assembler {
 
     // add $t0 $s1 5
     // add $t0 $0 3
-    public String addi(String[] parameters)
+    public void addi(String[] parameters)
     {
         int constant=Integer.parseInt( parameters[2]);
         String c="";
@@ -141,12 +142,14 @@ public class Assembler {
         }
         String machine="";
         machine="001000"+" "+get_register_number(parameters[1])+" "+get_register_number(parameters[0])+" "+c;
-       return machine;
+        System.out.println("machine code is : " +machine);
+
+        ob.addi(machine);
     }
 
 
 
-    public String sw(String[] parameters)
+    public void sw(String[] parameters)
     {
 
         String len=""+parameters[1].charAt(0);
@@ -169,8 +172,68 @@ public class Assembler {
         String machine="";
         machine="101011"+" "+get_register_number(temp)+" "+get_register_number(parameters[0])+" "+c;
         System.out.println("machine code is : " +machine);
-        return machine;
+          ob.sw(machine);
     }
 
+    
+    public void and(String[] parameters) { //not finished yet
+   	     String machine="";
+        machine="00000"+" "+get_register_number(parameters[0])+" "+get_register_number(parameters[1])+" "+get_register_number(parameters[2])+" "+"00000"+" "+"100100";
+        System.out.println("machine code is : " +machine);
+           ob.and(machine);
+
+   }
+    // add $t0 $s1 5
+    // add $t0 $0 3
+    public void andi(String[] parameters) {
+
+         int constant=Integer.parseInt(parameters[2]);
+         String c="";
+         for (int i = 0; i < 16; i++) {
+			if(constant%2==0) {
+				c="0"+c;
+			}
+			else
+			{
+				c="1"+c;
+			}
+			constant/=2;
+		}
+         String machine="";
+         machine="001100"+" "+get_register_number(parameters[1])+" "+get_register_number(parameters[0])+" "+c;
+         System.out.println("machine code is : " +machine);
+            ob.andi(machine);
+
+    }
+    
+    public void slt(String[] parameters) {
+   	
+        String machine="";
+        machine="000000"+" "+get_register_number(parameters[0])+" "+get_register_number(parameters[1])+" "+get_register_number(parameters[2])+" "+"00000"+" "+"101010";
+        System.out.println("machine code is : " +machine);
+      ob.slt(machine);
+   }
+   
+    public void slti(String[] parameters) {
+
+        int constant=Integer.parseInt(parameters[2]);
+        
+        String c="";
+        for (int i = 0; i < 16; i++) {
+			if(constant%2==0) {
+				c="0"+c;
+			}
+			else
+			{
+				c="1"+c;
+			}
+			constant/=2;
+		}
+        String machine="";
+        machine="001010"+" "+get_register_number(parameters[1])+" "+get_register_number(parameters[0])+" "+c;
+        System.out.println("machine code is : " +machine);
+        ob.slti(machine);
+
+   }
 
 }
