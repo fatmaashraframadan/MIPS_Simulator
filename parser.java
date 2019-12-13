@@ -15,7 +15,12 @@ public class parser
     public Assembler assem = new Assembler();
     public String[] parameters = new String[3];
     private HashMap<String, Integer> operations = new HashMap<>();
-    static int i = 0;
+    static int ProgramCounter = 0;
+
+    //Each Label and its index.
+    public static HashMap<String, Integer> Labels = new HashMap<>();
+
+   // static int i = 0;
 
 //    ArrayList<String>AllRegisters3 = new ArrayList<>();
 //    ArrayList<String>A
@@ -37,7 +42,7 @@ public class parser
         operations.put("andi", 3);//Register     Register       Constant
 
         operations.put("beq", 3);//Register     Register        offset
-        operations.put("bne ", 3);//Register     Register       offset
+        operations.put("bne", 3);//Register     Register       offset
 
         operations.put("sub", 3);//Register     Register       Register
 
@@ -82,16 +87,17 @@ public class parser
 
             case "bne" :
                 String[] arr9 = {tst[1],tst[2],tst[3]};
-              //  assem.bne(arr9);
+                System.out.println(Arrays.toString(arr9));
+               assem.bne(arr9);
                 break;
             case "beq" :
                 String[] arr10 = {tst[1],tst[2],tst[3]};
-                //assem.beq(arr10);
+                assem.beq(arr10);
                 break;
 
             case "and" :
                 String[] arr0 = {tst[1],tst[2] , tst[3]};
-             //   assem.and(arr0);
+                assem.and(arr0);
                 break;
             case "andi" :
                 String[] arr12 = {tst[1],tst[2] , tst[3]};
@@ -109,11 +115,11 @@ public class parser
 
             case "slti" :
                 String[] arr6 = {tst[1],tst[2],tst[3]};
-                //assem.slti(arr6);
+                assem.slti(arr6);
                 break;
             case "slt" :
                 String[] arr7 = {tst[1],tst[2],tst[3]};
-              //    assem.slt(arr7);
+                  assem.slt(arr7);
             case "sll" :
                 String[] arr8 = {tst[1],tst[2],tst[3]};
                 //   assem.sll(arr8);
@@ -149,25 +155,43 @@ public class parser
    }
 
 
-    public void Validate(ArrayList<String>tst)
+    public void Validate()
     {
         String Line;
-        for ( i = 0; i < tst.size(); i++)
+
+        for (int j = 0; j < memory.memoertext.size(); j++) {
+            Line = memory.memoertext.get(j); //FirstLine add $t0 $s1 $0
+            if(Line.contains(":"))
+            {
+                Line = Line.substring(0,Line.length()-1);//label
+                Labels.put(Line ,j );
+            }
+        }
+
+        for ( ; ProgramCounter < memory.memoertext.size(); ProgramCounter++)
         {
             int counter = 0;
-            Line = tst.get(i); //FirstLine add $t0 $s1 $0
+            Line = memory.memoertext.get(ProgramCounter); //FirstLine add $t0 $s1 $0
            //System.out.println("From Validate Line: " + Line);
             String[] strarr = Line.split(" ");
             //System.out.println("From Validate strarr: " + Arrays.toString(strarr));
             String x  = strarr[0];//add
+            //Label case
+
+            if(Line.contains(":"))
+            {
+               continue;
+            }
+            System.out.println(x);
             if(operations.containsKey(x))//Check Instruction Exsitance.
             {
+                System.out.println("Validation : "  + x);
                 int nom_of_arguments = operations.get(x);
                 int len = strarr.length-1;
                // System.out.println("From Validate len " + len + "      From Validate len " + nom_of_arguments);
                 if(nom_of_arguments != len)//Check Number of Arguments.
                 {
-                    System.out.println ("\nError in line" + i + " : " + x + " Takes " +operations.get( x)+" Arguments.\n");
+                    System.out.println ("\nError in line" + ProgramCounter + " : " + x + " Takes " +operations.get( x)+" Arguments.\n");
                 }
 
                 else// if(nom_of_arguments == len) // Check Arguments Validation.
@@ -187,15 +211,16 @@ public class parser
                             parse(Line);
                         }
                     }
-                    else//For labels.
-                    {
-
-                    }
+//                    else//For labels.
+//                    {
+//
+//                    }
                 }
             }
+            //beq bne jr j
             else
             {
-                System.out.println("\nError in line " + i + "  Check Instruction name.\n");
+                System.out.println("\nError in line " + ProgramCounter + "  Check Instruction name.\n");
             }
         }
     }
@@ -348,6 +373,23 @@ public class parser
     public void check_3_ArgumentsValidation( int nom_of_arguments , String x ,  String[] strarr , String Line)
     {
         int counter = 0;
+        //bne $ $ l (Map)
+
+        if(x.equals("bne") || x.equals("beq") )
+        {
+
+            for (int i = 0; i < 2; i++) {
+                if(CheckRegisterValidation(strarr[i+1])) // 1 2
+                {
+                    counter++;
+                }
+            }
+            String str = strarr[3];
+            if(Labels.containsKey(str))
+            {
+                parse(Line);
+            }
+        }
         if((x.equals("or") || x.equals("and") || x.equals("add") || x.equals("sub") || x.equals("slt") )) {
             for (int j = 0; j < nom_of_arguments; j++)//0 1 2
             {
@@ -359,7 +401,7 @@ public class parser
             //   System.out.println("From Validate Counter :  " + counter);
             if(counter != nom_of_arguments)
             {
-                System.out.println("\nError in line " + i + "  Check Instruction arguments.\n");
+                System.out.println("\nError in line " + ProgramCounter + "  Check Instruction arguments.\n");
             }
             else
                 parse(Line);
@@ -382,29 +424,12 @@ public class parser
                 parse(Line);
             }
             else
-                System.out.println("\nError in line " + i + "  Check Instruction arguments.\n");
+                System.out.println("\nError in line " + ProgramCounter + "  Check Instruction arguments.\n");
 
         }
 
 
-        //3 Arguments---->Register      Register        offset
-        else if((x.equals("beq") || x.equals("bne")) )
-        {
-            for (int j = 0; j < nom_of_arguments-1; j++)//0 1 2
-            {
-                if(CheckRegisterValidation(strarr[j+1])) // 1 2 3
-                {
-                    counter++;
-                }
-            }
-            //   System.out.println("From Validate Counter :  " + counter);
-            if(counter == nom_of_arguments-1 && isOffset(strarr[3]))
-            {
-                parse(Line);
-            }
-            else
-                System.out.println("\nError in line " + i + "  Check Instruction arguments.\n");
-        }
+
         else if (x.equals("sll"))
         {
             if(CheckRegisterValidation(strarr[1]) && CheckRegisterValidation(strarr[2]) && isNumber(strarr[3]))
@@ -412,7 +437,7 @@ public class parser
                 parse(Line);
             }
             else
-                System.out.println("\nError in line " + i + "  Check Instruction arguments.\n");
+                System.out.println("\nError in line " + ProgramCounter + "  Check Instruction arguments.\n");
 
         }
     }
@@ -431,7 +456,7 @@ public class parser
               }
               //   System.out.println("From Validate Counter :  " + counter);
               else
-                System.out.println("\nError in line " + i + "  Check Instruction arguments.\n");
+                System.out.println("\nError in line " + ProgramCounter + "  Check Instruction arguments.\n");
 
         }
 
@@ -442,7 +467,7 @@ public class parser
                 parse(Line);
             }
             else
-                System.out.println("\nError in line " + i + "  Check Instruction arguments.\n");
+                System.out.println("\nError in line " + ProgramCounter + "  Check Instruction arguments.\n");
         }
 
     }
