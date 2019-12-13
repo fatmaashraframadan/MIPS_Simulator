@@ -12,7 +12,7 @@ public class Main {
 
         registers.r_$s0=memory_address+1; //memory of index 1s
         registers.r_$s1=5;
-       // memory.memorydata.add(30);
+        // memory.memorydata.add(30);
         //memory.memorydata.add(60);
         Assembler a=new Assembler();
 //
@@ -26,17 +26,17 @@ public class Main {
 
         System.out.println("Enter your Code : ");
         Scanner scan = new Scanner(System.in);
-        String pass ;
+        String pass = "" ;
         ArrayList<String>s = new ArrayList<>();
         while (scan.hasNextLine())//Write ctrl + d to stop taking input.
         {
             pass = scan.nextLine();
-            memory.memoertext.add(pass);
+            s.add(pass);
         }
         parser p = new parser();
 
-       /// System.out.println(s);
-        p.Validate();
+        /// System.out.println(s);
+        p.Validate(s);
 
 
 //
