@@ -335,30 +335,34 @@ public class VirtualMachine {
 
     }
 
+    static public int JType_MachineCodeToText(String machineCode) {
+        String[] params = machineCode.split(" ");
 
+        return binary_to_decimal(params[1]);
+    }
 
-    static public int JType_MachineCodeToText(String machineCode)
+   /* static public int JType_MachineCodeToText(String machineCode)
     {
         String[] s = machineCode.split(" ");
         int x = binary_to_decimal(s[1]);
         return x;
 
         //return s;
-    }
+    }*/
 
 /*
 * j done
 *addi $t0 $0 0
 *done:
  */
-    public void j(String machincode)
+    /*public void j(String machincode)
     {
         System.out.println("hereeeee" + machincode);
         int index= JType_MachineCodeToText(machincode);
         parser.ProgramCounter =index;
         System.out.println("Program Counter Jump: " + parser.ProgramCounter);
 
-    }
+    }*/
     public void add(String machincode) {
         String[] parameters = RType_MachineCodeToText(machincode);
 
@@ -544,5 +548,96 @@ public class VirtualMachine {
         } else {
             set_register(parameters[0], 0);
         }
+    }
+    
+    //For subtraction
+    public void sub(String machineCode) {
+        String[] parameters = RType_MachineCodeToText(machineCode);
+
+        int reg1 = get_register(parameters[1]);
+        int reg2 = get_register(parameters[2]);
+
+        System.out.println("Reg1 : " + reg1 + " ... Reg2: " + reg2);
+
+        if (reg1 >= memory_address)
+            reg1 = binary_to_decimal(memory.memorydata[reg1]);
+        if (reg2 >= memory_address)
+            reg2 = binary_to_decimal(memory.memorydata[reg2]);
+        set_register(parameters[0], reg1 - reg2);
+
+        System.out.println("Result: " + get_register(parameters[0]));
+    }
+
+    //For Load Word
+    public void lw(String machineCode){
+        String[] parameters = IType_MachineCodeToText(machineCode);
+
+        int reg1 = get_register(parameters[2]);
+      //  int reg2 = get_register(parameters[0]);
+        int offset = Integer.parseInt(parameters[1]);
+        int idx = reg1 + (offset/4) + memory_address;
+
+        set_register(parameters[0], binary_to_decimal(memory.memorydata[idx]));
+    }
+
+    //For or
+    public void or(String machineCode){
+        String[] parameters = RType_MachineCodeToText(machineCode);
+        int reg1 = get_register(parameters[1]);
+        int reg2 = get_register(parameters[2]);
+
+        System.out.println("Reg1 : " + reg1 + " ... Reg2: " + reg2);
+
+        if (reg1 >= memory_address)
+            reg1 = binary_to_decimal(memory.memorydata[reg1]);
+        if (reg2 >= memory_address)
+            reg2 = binary_to_decimal(memory.memorydata[reg2]);
+        set_register(parameters[0], reg1 | reg2);
+
+        System.out.println("Result: " + get_register(parameters[0]));
+    }
+
+    //For ori
+    public void ori(String machineCode){
+        String[] parameters = IType_MachineCodeToText(machineCode);
+
+        int reg1 = get_register(parameters[1]);
+        int constNum = Integer.parseInt(parameters[2]);
+
+        System.out.println("Reg1 : " + reg1 + " ... Reg2: " + constNum);
+
+        if (reg1 >= memory_address)
+            reg1 = binary_to_decimal(memory.memorydata[reg1]);
+
+        set_register(parameters[0], reg1 | constNum);
+
+        System.out.println("Result: " + get_register(parameters[0]));
+    }
+
+    //For shift left logical
+    public void sll(String machineCode){
+        String[] parameters = RType_MachineCodeToText(machineCode);
+        int reg1 = get_register(parameters[1]);
+        int constNum = Integer.parseInt(parameters[2]);
+
+        if (reg1 >= memory_address)
+            reg1 = binary_to_decimal(memory.memorydata[reg1]);
+
+        set_register(parameters[0], reg1 << constNum);
+
+        System.out.println("Result: " + get_register(parameters[0]));
+
+    }
+
+    //Load Upper Immediate
+    public void lui(String machineCode){
+
+    }
+
+    //Jump instruction
+    public void j(String machineCode){
+
+        parser.ProgramCounter = JType_MachineCodeToText(machineCode);
+        System.out.println("PC Jump: " + parser.ProgramCounter);
     }
 }
