@@ -435,7 +435,7 @@ public class parser
                     counter++;
                 }
             }
-            if(counter == nom_of_arguments-2 && isHexNumber(strarr[3]))
+            if(counter == nom_of_arguments-2 && (isHexNumber(strarr[3] ||isNumber(strarr[3]) ))
             {
                 parse(Line);
             }
