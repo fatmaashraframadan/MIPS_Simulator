@@ -567,6 +567,18 @@ public class VirtualMachine {
 
         System.out.println("Result: " + get_register(parameters[0]));
     }
+    
+        public void jr(String machincode)
+    {
+        String[] tmp = machincode.split(" ");
+        String name = RegisterName.get(tmp[1]);
+        int r1 = get_register(name);//jr $t0 -- 5   5000
+        if (r1 >= memory_address) {// md const value get the first address in memory=100000
+            r1 = binary_to_decimal(memory.memorydata[r1]); // md const value get the first address in memory=100000
+        }
+        parser.ProgramCounter = r1;
+        System.out.println("Name : " + name + "     "+"PrpgramCouter : "+parser.ProgramCounter + "   "+"NewAddress : "+(r1));
+    }
 
     //For Load Word
     public void lw(String machineCode){
