@@ -122,6 +122,16 @@ public class Assembler {
         ob.beq(machine);
 
     }
+    
+ // Jump register Instruction. --- go to the address stored in register ---- Rtype Instruction.
+    public void jr(String[] parameters)
+    {
+        String x =get_register_number(parameters[0]);
+        String machine ="000000"+" "+ x+" "+"00000" + " " + "00000"+" " +"00000"+" " +"001000";
+
+        System.out.println(machine);
+        ob.jr(machine);
+    }
 
 
     // Jump Instruction.
