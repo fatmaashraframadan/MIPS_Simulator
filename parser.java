@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
 
 public class parser
 {
@@ -12,14 +13,9 @@ public class parser
     public String[] parameters = new String[3];
     private HashMap<String, Integer> operations = new HashMap<>();
     static int ProgramCounter = 0;
-
     //Each Label and its index.
     public static HashMap<String, Integer> Labels = new HashMap<>();
 
-    // static int i = 0;
-
-//    ArrayList<String>AllRegisters3 = new ArrayList<>();
-//    ArrayList<String>A
 
     public parser()
     {
@@ -136,7 +132,7 @@ public class parser
             /**********************************************With 1 Parameters************************************************/
             case "jr" :
                 String[] arr14 = {tst[1]};
-                //  assem.jr(arr14);
+                 assem.jr(arr14);
                 break;
             case "j" :
                 String[] arr17 = {tst[1]};
@@ -166,8 +162,6 @@ public class parser
 
         for ( ; ProgramCounter < tst.size(); ProgramCounter++)
         {
-
-
             Line =  tst.get(ProgramCounter); //FirstLine add $t0 $s1 $0
             //System.out.println("From Validate Line: " + Line);
             memory.memorydata[ProgramCounter]=Line;
@@ -206,15 +200,19 @@ public class parser
                     {
                         System.out.println();
                         //strarr[1].equals("j") || strarr[1].equals("jr")) &&
-                        if((Labels.containsKey(strarr[1])))
+                        if((x.equals("j") && (Labels.containsKey(strarr[1]))))
                         {
                             parse(Line);
                         }
+                        else if (x.equals("jr") && CheckRegisterValidation(strarr[1]))
+                        {
+                            parse(Line);
+                        }
+                        else
+                        {
+                            System.out.println("\nError in line " + ProgramCounter + "  Check Instruction name.\n");
+                        }
                     }
-//                    else//For labels.
-//                    {
-//
-//                    }
                 }
             }
             //beq bne jr j
@@ -224,9 +222,6 @@ public class parser
             }
         }
     }
-
-
-
 
     //Called to check register validation.
     public boolean CheckRegisterValidation(String s) //$s0
@@ -349,8 +344,9 @@ public class parser
             String s = "";
             s+=t.charAt(2);//$s0
             s+=t.charAt(3);
+            int nom = Integer.parseInt(x);
 
-            if(CheckRegisterValidation(s))
+            if(CheckRegisterValidation(s) && (nom%4==0))
             {
                 return true;
             }
@@ -361,12 +357,13 @@ public class parser
             s+=t.charAt(2);//$s0
             s+=t.charAt(3);
             s+=t.charAt(4);
-            if(CheckRegisterValidation(s))
+             int nom = Integer.parseInt(x);
+
+            if(CheckRegisterValidation(s) && (nom%4==0))
             {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -411,15 +408,14 @@ public class parser
 
 
         //3 Arguments---->Register      Register        Contant
-        else if((x.equals("ori") || x.equals("andi") || x.equals("addi") || x.equals("slti") )) {
+        else if(( x.equals("andi") || x.equals("addi") || x.equals("slti") )) {
             for (int j = 0; j < nom_of_arguments-1; j++)//0 1 2
             {
-                if(CheckRegisterValidation(strarr[j+1])) // 1 2 3
+                if (CheckRegisterValidation(strarr[j + 1])) // 1 2 3
                 {
                     counter++;
                 }
             }
-
             //   System.out.println("From Validate Counter :  " + counter);
             if(counter == nom_of_arguments-1 && isNumber(strarr[3]))
             {
@@ -427,10 +423,25 @@ public class parser
             }
             else
                 System.out.println("\nError in line " + ProgramCounter + "  Check Instruction arguments.\n");
-
         }
 
-
+        else if(x.equals("ori"))
+        {
+            System.out.println(Arrays.toString(strarr));
+            for (int i = 0; i <nom_of_arguments-2 ; i++)
+            {
+                if (CheckRegisterValidation(strarr[i + 1])) // 1 2 3
+                {
+                    counter++;
+                }
+            }
+            if(counter == nom_of_arguments-2 && isHexNumber(strarr[3]))
+            {
+                parse(Line);
+            }
+            else
+                System.out.println("\nError in line " + ProgramCounter + "  Check Instruction arguments.\n");
+        }
 
         else if (x.equals("sll"))
         {
@@ -450,13 +461,10 @@ public class parser
 
         if((x.equals("lui")) )
         {
-            //System.out.println(strarr[2]);
-            if(CheckRegisterValidation(strarr[1]) && isNumber(strarr[2]))
+            if(CheckRegisterValidation(strarr[1]) && isHexNumber(strarr[2]))
             {
-                //  System.out.println(strarr[2]);
                 parse(Line);
             }
-            //   System.out.println("From Validate Counter :  " + counter);
             else
                 System.out.println("\nError in line " + ProgramCounter + "  Check Instruction arguments.\n");
 
@@ -475,25 +483,18 @@ public class parser
     }
 
 
-//    public boolean CheckShiftamountValidation(String x)
-//    {
-//
-////        if()
-////        {
-////            return true;
-////        }
-////        return false;
-//    }
-
-    public boolean isAddress(String x)
+    public boolean isHexNumber (String x)
     {
-        if(isNumber(x) )
-        {
-            int address = Integer.parseInt(x);
-            if(address <= 100000)
-                return true;
+        x = x.substring(2);
+        System.out.println(x);
+        try {
+            Long.parseLong(x, 16);
+            return true;
         }
-        return false;
+        catch (NumberFormatException ex) {
+            System.out.println("here");
+            return false;
+        }
     }
 
 }
