@@ -1,12 +1,10 @@
-package sample;
+//package sample;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
 public class Parser {
-
-    public String operation;
     public Assembler assem = new Assembler();
     public String[] parameters = new String[3];
     private HashMap<String, Integer> operations = new HashMap<>();
@@ -15,10 +13,6 @@ public class Parser {
     //Each Label and its index.
     public static HashMap<String, Integer> Labels = new HashMap<>();
 
-    // static int i = 0;
-
-//    ArrayList<String>AllRegisters3 = new ArrayList<>();
-//    ArrayList<String>A
 
     public Parser() {
         //Arguments 3 and Registers.
@@ -77,7 +71,7 @@ public class Parser {
                 break;
             case "sub" :
                 String[] arr3 = {tst[1],tst[2],tst[3]};
-                //  assem.lw(arr3);
+               assem.lw(arr3);
                 break;
 
             case "bne" :
@@ -96,16 +90,16 @@ public class Parser {
                 break;
             case "andi" :
                 String[] arr12 = {tst[1],tst[2] , tst[3]};
-                //     assem.andi(arr12);
+                    assem.andi(arr12);
                 break;
 
             case "or" :
                 String[] arr11 = {tst[1],tst[2] , tst[3]};
-                //   assem.or(arr11);
+                 assem.or(arr11);
                 break;
             case "ori" :
                 String[] arr13 = {tst[1],tst[2] , tst[3]};
-                //  assem.ori(arr13);
+                assem.ori(arr13);
                 break;
 
             case "slti" :
@@ -117,7 +111,7 @@ public class Parser {
                 assem.slt(arr7);
             case "sll" :
                 String[] arr8 = {tst[1],tst[2],tst[3]};
-                //   assem.sll(arr8);
+                assem.sll(arr8);
                 break;
             /**********************************************With 2 Parameters************************************************/
             case "sw" :
@@ -126,11 +120,11 @@ public class Parser {
                 break;
             case "lui" :
                 String[] arr5 = {tst[1],tst[2]};
-                //assem.lui(arr5);
+                assem.lui(arr5);
                 break;
             case "lw" :
                 String[] arr15 = {tst[1],tst[2]};
-                // assem.lw(arr4);
+                assem.lw(arr15);
                 break;
             /**********************************************With 1 Parameters************************************************/
             case "jr" :
@@ -431,6 +425,7 @@ public class Parser {
         else if(x.equals("ori"))
         {
             System.out.println(Arrays.toString(strarr));
+
             for (int i = 0; i <nom_of_arguments-2 ; i++)
             {
                 if (CheckRegisterValidation(strarr[i + 1])) // 1 2 3
@@ -438,7 +433,7 @@ public class Parser {
                     counter++;
                 }
             }
-            if(counter == nom_of_arguments-2 && isHexNumber(strarr[3]))
+            if(counter == nom_of_arguments-2 &&( isHexNumber(strarr[3]) || isNumber(strarr[3])))//0x245F
             {
                 parse(Line);
             }
