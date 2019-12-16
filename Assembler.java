@@ -1,15 +1,18 @@
-package sample;
+//package sample;
 
 import javafx.scene.layout.Pane;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Assembler {
 
-    Map<String, String> register = new HashMap<>();
-
     static VirtualMachine ob = new VirtualMachine();
+    //For GUI Table
+    static public ArrayList<Instruction>MachineCode = new ArrayList<>();
+    static  Instruction tmp = new Instruction();
+
 
     static String get_register_number(String parameter) {
         if (parameter.equals("$at")) {
@@ -80,15 +83,346 @@ public class Assembler {
 
     }
 
+
+    /**********************************************ALU operations************************************************/
+    /*
+     * 	ALU operations:
+     */
+
     // add $t0 $s1 $0
     // add $t0 $0 $0
     public void add(String[] parameters) {
         String machine = "";
         machine = "000000" + " " + get_register_number(parameters[0]) + " " + get_register_number(parameters[1]) + " "
                 + get_register_number(parameters[2]) + " " + "00000" + " " + "100000";
-        System.out.println("machine code is : " + machine);
+
+        //For GUI Table
+        tmp.Type = "R-Type";
+        tmp.MachineCode = machine;
+       MachineCode.add(tmp);
+        //System.out.println("machine code is : " + machine);
         // return machine;
         ob.add(machine);
+    }
+
+
+    // add $t0 $s1 5
+    // add $t0 $0 3
+    public void addi(String[] parameters) {
+        int constant = Integer.parseInt(parameters[2]);
+        String c = "";
+        for (int i = 0; i < 16; i++) {
+            if (constant % 2 == 0) {
+                c = "0" + c;
+            } else {
+                c = "1" + c;
+            }
+            constant /= 2;
+        }
+        String machine = "";
+        machine = "001000" + " " + get_register_number(parameters[1]) + " " + get_register_number(parameters[0]) + " " + c;
+        System.out.println("machine code is : " + machine);
+
+        //For GUI Table
+        tmp.Type = "I-Type";
+        tmp.MachineCode = machine;
+        MachineCode.add(tmp);
+
+        ob.addi(machine);
+    }
+
+
+    public void and(String[] parameters) { // not finished yet
+        String machine = "";
+        machine = "00000" + " " + get_register_number(parameters[0]) + " " + get_register_number(parameters[1]) + " "
+                + get_register_number(parameters[2]) + " " + "00000" + " " + "100100";
+
+        //For GUI Table
+        tmp.Type = "R-Type";
+        tmp.MachineCode = machine;
+        MachineCode.add(tmp);
+
+       // System.out.println("machine code is : " + machine);
+        ob.and(machine);
+
+    }
+
+
+    // add $t0 $s1 5
+    // add $t0 $0 3
+    public void andi(String[] parameters) {
+        int constant = Integer.parseInt(parameters[2]);
+        String c = "";
+        for (int i = 0; i < 16; i++) {
+            if (constant % 2 == 0) {
+                c = "0" + c;
+            } else {
+                c = "1" + c;
+            }
+            constant /= 2;
+        }
+        String machine = "";
+        machine = "001100" + " " + get_register_number(parameters[1]) + " " + get_register_number(parameters[0]) + " "
+                + c;
+
+        //For GUI Table
+        tmp.Type = "I-Type";
+        tmp.MachineCode = machine;
+        MachineCode.add(tmp);
+
+      //  System.out.println("machine code is : " + machine);
+        ob.andi(machine);
+
+    }
+
+
+    public void slt(String[] parameters) {
+
+        String machine = "";
+        machine = "000000" + " " + get_register_number(parameters[0]) + " " + get_register_number(parameters[1]) + " "
+                + get_register_number(parameters[2]) + " " + "00000" + " " + "101010";
+
+        //For GUI Table
+        tmp.Type = "R-Type";
+        tmp.MachineCode = machine;
+        MachineCode.add(tmp);
+
+       // System.out.println("machine code is : " + machine);
+
+        ob.slt(machine);
+    }
+
+
+    public void slti(String[] parameters) {
+
+        int constant = Integer.parseInt(parameters[2]);
+
+        String c = "";
+        for (int i = 0; i < 16; i++) {
+            if (constant % 2 == 0) {
+                c = "0" + c;
+            } else {
+                c = "1" + c;
+            }
+            constant /= 2;
+        }
+        String machine = "";
+        machine = "001010" + " " + get_register_number(parameters[1]) + " " + get_register_number(parameters[0]) + " "
+                + c;
+
+        //For GUI Table
+        tmp.Type = "I-Type";
+        tmp.MachineCode = machine;
+        MachineCode.add(tmp);
+
+        //System.out.println("machine code is : " + machine);
+        ob.slti(machine);
+
+    }
+
+    //For or
+    public void or(String[] parameters) {
+        String machineCode = "000000" + " " + get_register_number(parameters[0]) + " " +
+                get_register_number(parameters[1]) + " " +
+                get_register_number(parameters[2]) + " " +
+                "00000" + " " + "100101";
+
+        //For GUI Table
+        tmp.Type = "R-Type";
+        tmp.MachineCode = machineCode;
+        MachineCode.add(tmp);
+
+        //System.out.println("Machine Code: " + machineCode);
+
+        ob.or(machineCode);
+    }
+
+    //For ori
+    public void ori(String[] parameters) {
+        int constant = Integer.parseInt(parameters[2]);
+        StringBuilder codeBinary = new StringBuilder();
+        for (int i = 0; i < 16; i++) {
+            if (constant % 2 == 0) {
+                codeBinary.insert(0, "0");
+            } else {
+                codeBinary.insert(0, "1");
+            }
+            constant /= 2;
+        }
+
+        String machineCode = "001101" + " " + get_register_number(parameters[0]) + " " +
+                get_register_number(parameters[1]) + " " + codeBinary;
+
+        //For GUI Table
+        tmp.Type = "I-Type";
+        tmp.MachineCode = machineCode;
+        MachineCode.add(tmp);
+
+        //System.out.println("Machine Code: " + machineCode);
+
+        ob.ori(machineCode);
+    }
+
+    //For Shift Logical Left
+    public void sll(String[] parameters) { //000000
+        int constant = Integer.parseInt(parameters[2]);
+        StringBuilder codeBinary = new StringBuilder();
+        for (int i = 0; i < 16; i++) {
+            if (constant % 2 == 0) {
+                codeBinary.insert(0, "0");
+            } else {
+                codeBinary.insert(0, "1");
+            }
+            constant /= 2;
+        }
+        String machineCode = "000000" + " " + get_register_number(parameters[0]) + " " +
+                get_register_number(parameters[1]) + " " + codeBinary;
+
+        //For GUI Table
+        tmp.Type = "R-Type";
+        tmp.MachineCode = machineCode;
+        MachineCode.add(tmp);
+
+        //System.out.println("Machine Code: " + machineCode);
+
+        ob.ori(machineCode);
+    }
+
+    public void lui(String[] parameters) {
+
+        String machineCode="";
+        //For GUI Table
+        tmp.Type = "I-Type";
+        tmp.MachineCode = machineCode;
+        MachineCode.add(tmp);
+    }
+
+    //For subtract operation
+    public void sub(String[] parameters) {
+        String machineCode = "";
+
+        machineCode = "000000" + " " + get_register_number(parameters[0]) + " " +
+                get_register_number(parameters[1]) + " " +
+                get_register_number(parameters[2]) + " " +
+                "00000" + " " + "100010";
+
+
+        //For GUI Table
+        tmp.Type = "R-Type";
+        tmp.MachineCode = machineCode;
+        MachineCode.add(tmp);
+
+        //System.out.println("Machine Code: " + machineCode);
+
+        ob.sub(machineCode);
+    }
+
+    /**********************************************Loads and stores************************************************/
+
+    /*
+    * 	Loads and stores:
+    */
+    public void lw(String[] parameters) { //100011
+        String len = "" + parameters[1].charAt(0);
+        int offset = Integer.parseInt(len);
+
+        //int constant = Integer.parseInt(parameters[2]);
+        StringBuilder codeBinary = new StringBuilder();
+        for (int i = 0; i < 16; i++) {
+            if (offset % 2 == 0) {
+                codeBinary.insert(0, "0");
+            } else {
+                codeBinary.insert(0, "1");
+            }
+            offset /= 2;
+        }
+        String temp = "" + parameters[1].charAt(2) + parameters[1].charAt(3) + parameters[1].charAt(4);
+        String machineCode = "100011" + " " + get_register_number(temp) + " " +
+                get_register_number(parameters[1]) + " " + codeBinary;
+
+        //For GUI Table
+        tmp.Type = "I-Type";
+        tmp.MachineCode = machineCode;
+        MachineCode.add(tmp);
+
+//        System.out.println("Machine Code: " + machineCode);
+
+        ob.lw(machineCode);
+    }
+
+
+    public void sw(String[] parameters) {
+
+        String len = "" + parameters[1].charAt(0);
+
+        int offist = Integer.parseInt(len);
+
+        String c = "";
+        for (int i = 0; i < 16; i++) {
+            if (offist % 2 == 0) {
+                c = "0" + c;
+            } else {
+                c = "1" + c;
+            }
+            offist /= 2;
+        }
+
+        String temp = "" + parameters[1].charAt(2) + parameters[1].charAt(3) + parameters[1].charAt(4);
+        String machine = "";
+        machine = "101011" + " " + get_register_number(temp) + " " + get_register_number(parameters[0]) + " " + c;
+
+        //For GUI Table
+        tmp.Type = "I-Type";
+        tmp.MachineCode = machine;
+        MachineCode.add(tmp);
+
+        //System.out.println("machine code is : " + machine);
+        ob.sw(machine);
+    }
+
+
+
+    /**********************************************Branches/jumps************************************************/
+    /*
+     *  Branches/jumps:
+     */
+
+    public void j(String[] parameters) {
+        int index = Parser.Labels.get(parameters[2]);
+        StringBuilder codeBinary = new StringBuilder();
+
+        for (int i = 0; i < 26; i++) {
+            if (index % 2 == 0) {
+                codeBinary.insert(0, "0");
+            } else {
+                codeBinary.insert(0, "1");
+            }
+            index /= 2;
+        }
+        String machineCode = "000010" + " " + codeBinary;
+
+        //For GUI Table
+        tmp.Type = "J-Type";
+        tmp.MachineCode = machineCode;
+        MachineCode.add(tmp);
+        //System.out.println("Machine Code: " + machineCode);
+
+        ob.j(machineCode);
+    }
+
+    // Jump register Instruction. --- go to the address stored in register ---- Rtype Instruction.
+    public void jr(String[] parameters)
+    {
+        String x =get_register_number(parameters[0]);
+        String machine ="000000"+" "+ x+" "+"00000" + " " + "00000"+" " +"00000"+" " +"001000";
+
+        //For GUI Table
+        tmp.Type = "R-Type";
+        tmp.MachineCode = machine;
+        MachineCode.add(tmp);
+
+        //System.out.println(machine);
+        ob.jr(machine);
     }
 
     // beq $t0 $0 l
@@ -112,7 +446,13 @@ public class Assembler {
         // 6-bit opcpde ----- 5bit Rigester ------ 5bit Register ------- 16 bit
         machine = "000100" + " " + get_register_number(parameters[0]) + " " + get_register_number(parameters[1]) + " "
                 + c;
-        System.out.println(machine);
+
+        //For GUI Table
+        tmp.Type = "I-Type";
+        tmp.MachineCode = machine;
+        MachineCode.add(tmp);
+
+        //System.out.println(machine);
         ob.beq(machine);
 
     }
@@ -139,236 +479,13 @@ public class Assembler {
         machine = "000101" + " " + get_register_number(parameters[0]) + " " + get_register_number(parameters[1]) + " "
                 + c;
 
+        //For GUI Table
+        tmp.Type = "I-Type";
+        tmp.MachineCode = machine;
+        MachineCode.add(tmp);
+
         System.out.println(machine);
         ob.bne(machine);
-    }
-
-    // add $t0 $s1 5
-    // add $t0 $0 3
-    public void addi(String[] parameters) {
-        int constant = Integer.parseInt(parameters[2]);
-        String c = "";
-        for (int i = 0; i < 16; i++) {
-            if (constant % 2 == 0) {
-                c = "0" + c;
-            } else {
-                c = "1" + c;
-            }
-            constant /= 2;
-        }
-        String machine = "";
-        machine = "001000" + " " + get_register_number(parameters[1]) + " " + get_register_number(parameters[0]) + " "
-                + c;
-        System.out.println("machine code is : " + machine);
-
-        ob.addi(machine);
-    }
-
-    public void sw(String[] parameters) {
-
-        String len = "" + parameters[1].charAt(0);
-
-        int offist = Integer.parseInt(len);
-
-        String c = "";
-        for (int i = 0; i < 16; i++) {
-            if (offist % 2 == 0) {
-                c = "0" + c;
-            } else {
-                c = "1" + c;
-            }
-            offist /= 2;
-        }
-
-        String temp = "" + parameters[1].charAt(2) + parameters[1].charAt(3) + parameters[1].charAt(4);
-        String machine = "";
-        machine = "101011" + " " + get_register_number(temp) + " " + get_register_number(parameters[0]) + " " + c;
-        System.out.println("machine code is : " + machine);
-        ob.sw(machine);
-    }
-
-    public void and(String[] parameters) { // not finished yet
-        String machine = "";
-        machine = "00000" + " " + get_register_number(parameters[0]) + " " + get_register_number(parameters[1]) + " "
-                + get_register_number(parameters[2]) + " " + "00000" + " " + "100100";
-        System.out.println("machine code is : " + machine);
-        ob.and(machine);
-
-    }
-
-    // add $t0 $s1 5
-    // add $t0 $0 3
-    public void andi(String[] parameters) {
-
-        int constant = Integer.parseInt(parameters[2]);
-        String c = "";
-        for (int i = 0; i < 16; i++) {
-            if (constant % 2 == 0) {
-                c = "0" + c;
-            } else {
-                c = "1" + c;
-            }
-            constant /= 2;
-        }
-        String machine = "";
-        machine = "001100" + " " + get_register_number(parameters[1]) + " " + get_register_number(parameters[0]) + " "
-                + c;
-        System.out.println("machine code is : " + machine);
-        ob.andi(machine);
-
-    }
-
-    public void slt(String[] parameters) {
-
-        String machine = "";
-        machine = "000000" + " " + get_register_number(parameters[0]) + " " + get_register_number(parameters[1]) + " "
-                + get_register_number(parameters[2]) + " " + "00000" + " " + "101010";
-        System.out.println("machine code is : " + machine);
-        ob.slt(machine);
-    }
-
-    public void slti(String[] parameters) {
-
-        int constant = Integer.parseInt(parameters[2]);
-
-        String c = "";
-        for (int i = 0; i < 16; i++) {
-            if (constant % 2 == 0) {
-                c = "0" + c;
-            } else {
-                c = "1" + c;
-            }
-            constant /= 2;
-        }
-        String machine = "";
-        machine = "001010" + " " + get_register_number(parameters[1]) + " " + get_register_number(parameters[0]) + " "
-                + c;
-        System.out.println("machine code is : " + machine);
-        ob.slti(machine);
-
-    }
-
-    //For subtract operation
-    public void sub(String[] parameters) {
-        String machineCode = "";
-
-        machineCode = "000000" + " " + get_register_number(parameters[0]) + " " +
-                get_register_number(parameters[1]) + " " +
-                get_register_number(parameters[2]) + " " +
-                "00000" + " " + "100010";
-
-        System.out.println("Machine Code: " + machineCode);
-
-        ob.sub(machineCode);
-    }
-
-    public void lw(String[] parameters) { //100011
-        String len = "" + parameters[1].charAt(0);
-        int offset = Integer.parseInt(len);
-
-        //int constant = Integer.parseInt(parameters[2]);
-        StringBuilder codeBinary = new StringBuilder();
-        for (int i = 0; i < 16; i++) {
-            if (offset % 2 == 0) {
-                codeBinary.insert(0, "0");
-            } else {
-                codeBinary.insert(0, "1");
-            }
-            offset /= 2;
-        }
-        String temp = "" + parameters[1].charAt(2) + parameters[1].charAt(3) + parameters[1].charAt(4);
-        String machineCode = "100011" + " " + get_register_number(temp) + " " +
-                get_register_number(parameters[1]) + " " + codeBinary;
-
-        System.out.println("Machine Code: " + machineCode);
-
-        ob.lw(machineCode);
-    }
-
-    //For or
-    public void or(String[] parameters) {
-        String machineCode = "000000" + " " + get_register_number(parameters[0]) + " " +
-                get_register_number(parameters[1]) + " " +
-                get_register_number(parameters[2]) + " " +
-                "00000" + " " + "100101";
-
-        System.out.println("Machine Code: " + machineCode);
-
-        ob.or(machineCode);
-    }
-
-    //For ori
-    public void ori(String[] parameters) {
-        int constant = Integer.parseInt(parameters[2]);
-        StringBuilder codeBinary = new StringBuilder();
-        for (int i = 0; i < 16; i++) {
-            if (constant % 2 == 0) {
-                codeBinary.insert(0, "0");
-            } else {
-                codeBinary.insert(0, "1");
-            }
-            constant /= 2;
-        }
-
-        String machineCode = "001101" + " " + get_register_number(parameters[0]) + " " +
-                get_register_number(parameters[1]) + " " + codeBinary;
-
-        System.out.println("Machine Code: " + machineCode);
-
-        ob.ori(machineCode);
-    }
-
-    //For Shift Logical Left
-    public void sll(String[] parameters) { //000000
-        int constant = Integer.parseInt(parameters[2]);
-        StringBuilder codeBinary = new StringBuilder();
-        for (int i = 0; i < 16; i++) {
-            if (constant % 2 == 0) {
-                codeBinary.insert(0, "0");
-            } else {
-                codeBinary.insert(0, "1");
-            }
-            constant /= 2;
-        }
-        String machineCode = "000000" + " " + get_register_number(parameters[0]) + " " +
-                get_register_number(parameters[1]) + " " + codeBinary;
-
-        System.out.println("Machine Code: " + machineCode);
-
-        ob.ori(machineCode);
-    }
-
-    public void lui(String[] parameters) {
-
-    }
-
-    public void j(String[] parameters) {
-        int index = Parser.Labels.get(parameters[2]);
-        StringBuilder codeBinary = new StringBuilder();
-
-        for (int i = 0; i < 26; i++) {
-            if (index % 2 == 0) {
-                codeBinary.insert(0, "0");
-            } else {
-                codeBinary.insert(0, "1");
-            }
-            index /= 2;
-        }
-        String machineCode = "000010" + " " + codeBinary;
-
-        System.out.println("Machine Code: " + machineCode);
-
-        ob.j(machineCode);
-    }
-
-    // Jump register Instruction. --- go to the address stored in register ---- Rtype Instruction.
-    public void jr(String[] parameters)
-    {
-        String x =get_register_number(parameters[0]);
-        String machine ="000000"+" "+ x+" "+"00000" + " " + "00000"+" " +"00000"+" " +"001000";
-
-        System.out.println(machine);
-        ob.jr(machine);
     }
 
 }
