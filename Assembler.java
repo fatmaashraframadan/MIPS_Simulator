@@ -94,7 +94,6 @@ public class Assembler {
            hexa= "0" + hexa;
        }
         return hexa;
-
     }
 
 
@@ -118,7 +117,6 @@ public class Assembler {
         // return machine;
         ob.add(machine);
     }
-
 
     // add $t0 $s1 5
     // add $t0 $0 3
@@ -245,9 +243,6 @@ public class Assembler {
         tmp.Type = "R-Type";
         tmp.MachineCode = machineCode;
         MachineCode.add(tmp);
-
-        //System.out.println("Machine Code: " + machineCode);
-
         ob.or(machineCode);
     }
 
@@ -260,7 +255,6 @@ public class Assembler {
         {
             int constant = Integer.parseInt(parameters[2]);
             code = VirtualMachine.decimal_to_binary(constant);
-
         }
         else
         {
@@ -351,8 +345,7 @@ public class Assembler {
     /*
     * 	Loads and stores:
     */
-    public void lw(String[] parameters) { //100011
-        //lw $t5 0($t0) 0+0
+    public void lw(String[] parameters) { //100011   //lw $t5 0($t0) 0+0
         String len = "" + parameters[1].charAt(0);
         int offset = Integer.parseInt(len);
         String codeBinary = VirtualMachine.decimal_to_binary(offset);
@@ -410,20 +403,24 @@ public class Assembler {
     /*
      *  Branches/jumps:
      */
-
+    //j label
     public void j(String[] parameters) {
-        int index = Parser.Labels.get(parameters[2]);
-        StringBuilder codeBinary = new StringBuilder();
+        int index = Parser.Labels.get(parameters[0]);
+        String c = "";// binary of label instruction index.
 
-        for (int i = 0; i < 26; i++) {
+        // Convert decimal to binary
+        // 16-bit for index
+        for (int i = 0; i < 16; i++) {
             if (index % 2 == 0) {
-                codeBinary.insert(0, "0");
+                c = "0" + c;
             } else {
-                codeBinary.insert(0, "1");
+                c = "1" + c;
             }
             index /= 2;
         }
-        String machineCode = "000010" + " " + codeBinary;
+
+        String machineCode = "";
+        machineCode = "000010" + " " + c;
 
         //For GUI Table
         tmp.Type = "J-Type";
