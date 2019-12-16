@@ -429,7 +429,7 @@ public class VirtualMachine {
         }
 
         // System.out.println(r1+" "+r2);
-        if (r1 > r2) {
+        if (r1 < r2) {
             set_register(parameters[0], 1);
         } else {
             set_register(parameters[0], 0);
@@ -448,7 +448,7 @@ public class VirtualMachine {
         int constant = Integer.parseInt(parameters[2]);
         // System.out.println(r1+" "+constant);
 
-        if (r1 > constant) {
+        if (r1 < constant) {
             set_register(parameters[0], 1);
         } else {
             set_register(parameters[0], 0);
