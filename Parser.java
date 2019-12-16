@@ -60,8 +60,6 @@ public class Parser {
         {
             /**********************************************With 3 Parameters************************************************/
             case "add" :
-                //System.out.println("Arrived Add Switch Case !!");
-
                 String[] arr = {tst[1],tst[2],tst[3]};
                 assem.add(arr);
                 break;
@@ -71,7 +69,7 @@ public class Parser {
                 break;
             case "sub" :
                 String[] arr3 = {tst[1],tst[2],tst[3]};
-               assem.lw(arr3);
+               assem.sub(arr3);
                 break;
 
             case "bne" :
