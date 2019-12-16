@@ -107,6 +107,7 @@ public class Parser {
             case "slt" :
                 String[] arr7 = {tst[1],tst[2],tst[3]};
                 assem.slt(arr7);
+                break;
             case "sll" :
                 String[] arr8 = {tst[1],tst[2],tst[3]};
                 assem.sll(arr8);
