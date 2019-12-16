@@ -2,6 +2,8 @@
 
 import javafx.scene.layout.Pane;
 
+import java.lang.reflect.Parameter;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,6 +82,18 @@ public class Assembler {
         } else {
             return "00000";
         }
+
+    }
+
+    public static String Hexa_to_Binary(String hexa)
+    {
+        hexa = hexa.substring(2);
+        hexa =  new BigInteger(hexa, 16).toString(2);
+       while (hexa.length() < 32)
+       {
+           hexa= "0" + hexa;
+       }
+        return hexa;
 
     }
 
@@ -239,44 +253,46 @@ public class Assembler {
 
     //For ori
     public void ori(String[] parameters) {
-        int constant = Integer.parseInt(parameters[2]);
-        StringBuilder codeBinary = new StringBuilder();
-        for (int i = 0; i < 16; i++) {
-            if (constant % 2 == 0) {
-                codeBinary.insert(0, "0");
-            } else {
-                codeBinary.insert(0, "1");
-            }
-            constant /= 2;
-        }
+        String machineCode = "";
+        boolean flag = false;
+        String code = "";
+        if(parameters[2].charAt(0)!='0' && parameters[2].charAt(1) != 'x')
+        {
+            int constant = Integer.parseInt(parameters[2]);
+            code = VirtualMachine.decimal_to_binary(constant);
 
-        String machineCode = "001101" + " " + get_register_number(parameters[0]) + " " +
-                get_register_number(parameters[1]) + " " + codeBinary;
+        }
+        else
+        {
+            flag =true;
+            String allBinary = Hexa_to_Binary(parameters[2]); //16 bit
+            System.out.println("length : " + allBinary.length());
+            for (int i = 16; i < 32; i++)
+            {
+                code+=""+allBinary.charAt(i);
+            }
+        }
+        //ari $t2 $t0 10
+        machineCode = "001101" + " " + get_register_number(parameters[1]) + " " +
+                get_register_number(parameters[0]) + " " + code;
 
         //For GUI Table
         tmp.Type = "I-Type";
         tmp.MachineCode = machineCode;
         MachineCode.add(tmp);
 
-        //System.out.println("Machine Code: " + machineCode);
+        System.out.println("Machine Code: " + machineCode);
 
-        ob.ori(machineCode);
+        ob.ori(machineCode , flag);
     }
 
     //For Shift Logical Left
     public void sll(String[] parameters) { //000000
         int constant = Integer.parseInt(parameters[2]);
-        StringBuilder codeBinary = new StringBuilder();
-        for (int i = 0; i < 16; i++) {
-            if (constant % 2 == 0) {
-                codeBinary.insert(0, "0");
-            } else {
-                codeBinary.insert(0, "1");
-            }
-            constant /= 2;
-        }
-        String machineCode = "000000" + " " + get_register_number(parameters[0]) + " " +
-                get_register_number(parameters[1]) + " " + codeBinary;
+        String s = "";
+     s = VirtualMachine.decimal_to_binary(constant);
+        String machineCode = "000000" + " " + get_register_number(parameters[1]) + " " +
+                get_register_number(parameters[0]) + " " + s;
 
         //For GUI Table
         tmp.Type = "R-Type";
@@ -285,16 +301,29 @@ public class Assembler {
 
         //System.out.println("Machine Code: " + machineCode);
 
-        ob.ori(machineCode);
+        ob.sll(machineCode);
     }
 
+    //0x00055 -- First 16 bit -- Most significant bits.
     public void lui(String[] parameters) {
+        String allBinary = Hexa_to_Binary(parameters[1]);
+        String First_16 = "";
 
-        String machineCode="";
+        System.out.println("all binary : " + allBinary);
+        for (int i = 0; i < 16; i++) {
+            First_16+=""+allBinary.charAt(i);
+        }
+        System.out.println("first 16 after conversion: " + First_16);
+        String machineCode="001111" + " " +"00000"+" "+ get_register_number(parameters[0]) + " " + First_16;
+        System.out.println(machineCode);
+
+
         //For GUI Table
         tmp.Type = "I-Type";
         tmp.MachineCode = machineCode;
         MachineCode.add(tmp);
+
+        ob.lui(machineCode);
     }
 
     //For subtract operation
@@ -323,22 +352,17 @@ public class Assembler {
     * 	Loads and stores:
     */
     public void lw(String[] parameters) { //100011
+        //lw $t5 0($t0) 0+0
         String len = "" + parameters[1].charAt(0);
         int offset = Integer.parseInt(len);
+        String codeBinary = VirtualMachine.decimal_to_binary(offset);
 
         //int constant = Integer.parseInt(parameters[2]);
-        StringBuilder codeBinary = new StringBuilder();
-        for (int i = 0; i < 16; i++) {
-            if (offset % 2 == 0) {
-                codeBinary.insert(0, "0");
-            } else {
-                codeBinary.insert(0, "1");
-            }
-            offset /= 2;
-        }
+
         String temp = "" + parameters[1].charAt(2) + parameters[1].charAt(3) + parameters[1].charAt(4);
+
         String machineCode = "100011" + " " + get_register_number(temp) + " " +
-                get_register_number(parameters[1]) + " " + codeBinary;
+                get_register_number(parameters[0]) + " " + codeBinary;
 
         //For GUI Table
         tmp.Type = "I-Type";
