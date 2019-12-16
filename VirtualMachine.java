@@ -596,8 +596,9 @@ public class VirtualMachine {
 
     //Jump instruction
     public void j(String machineCode){
-
-        Parser.ProgramCounter = JType_MachineCodeToText(machineCode);
+        String[] parameters = machineCode.split(" ");
+        int x = binary_to_decimal(parameters[1]);
+        Parser.ProgramCounter = x;
     }
 
     public void jr(String machincode)
