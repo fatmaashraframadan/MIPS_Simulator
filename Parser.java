@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class Parser {
+    String ErrorMsg = new String();
     public Assembler assem = new Assembler();
     public String[] parameters = new String[3];
     private HashMap<String, Integer> operations = new HashMap<>();
@@ -69,12 +70,11 @@ public class Parser {
                 break;
             case "sub" :
                 String[] arr3 = {tst[1],tst[2],tst[3]};
-               assem.sub(arr3);
+                assem.sub(arr3);
                 break;
 
             case "bne" :
                 String[] arr9 = {tst[1],tst[2],tst[3]};
-                System.out.println(Arrays.toString(arr9));
                 assem.bne(arr9);
                 break;
             case "beq" :
@@ -88,12 +88,12 @@ public class Parser {
                 break;
             case "andi" :
                 String[] arr12 = {tst[1],tst[2] , tst[3]};
-                    assem.andi(arr12);
+                assem.andi(arr12);
                 break;
 
             case "or" :
                 String[] arr11 = {tst[1],tst[2] , tst[3]};
-                 assem.or(arr11);
+                assem.or(arr11);
                 break;
             case "ori" :
                 String[] arr13 = {tst[1],tst[2] , tst[3]};
@@ -159,10 +159,9 @@ public class Parser {
         for ( ; ProgramCounter < tst.size(); ProgramCounter++)
         {
             Line =  tst.get(ProgramCounter); //FirstLine add $t0 $s1 $0
-            //System.out.println("From Validate Line: " + Line);
+            //ErrorMsg"From Validate Line: " + Line);
             Memory.memorydata[ProgramCounter]=Line;
             String[] strarr = Line.split(" ");
-            //System.out.println("From Validate strarr: " + Arrays.toString(strarr));
             String x  = strarr[0];//add
             //Label case
 
@@ -170,16 +169,15 @@ public class Parser {
             {
                 continue;
             }
-            System.out.println(x);
+      
             if(operations.containsKey(x))//Check Instruction Exsitance.
             {
-                System.out.println("Validation : "  + x);
                 int nom_of_arguments = operations.get(x);
                 int len = strarr.length-1;
-                // System.out.println("From Validate len " + len + "      From Validate len " + nom_of_arguments);
+                // ErrorMsg"From Validate len " + len + "      From Validate len " + nom_of_arguments);
                 if(nom_of_arguments != len)//Check Number of Arguments.
                 {
-                    System.out.println ("\nError in line" + ProgramCounter + " : " + x + " Takes " +operations.get( x)+" Arguments.\n");
+                    ErrorMsg = "\nError in line" + ProgramCounter + " : " + x + " Takes " +operations.get( x)+" Arguments.\n";
                 }
 
                 else// if(nom_of_arguments == len) // Check Arguments Validation.
@@ -194,7 +192,6 @@ public class Parser {
                     }
                     else if (nom_of_arguments == 1)
                     {
-                        System.out.println();
                         //strarr[1].equals("j") || strarr[1].equals("jr")) &&
                         if((x.equals("j") && (Labels.containsKey(strarr[1]))))
                         {
@@ -206,7 +203,7 @@ public class Parser {
                         }
                         else
                         {
-                            System.out.println("\nError in line " + ProgramCounter + "  Check Instruction name.\n");
+                            ErrorMsg = "\nError in line " + ProgramCounter + "  Check Instruction name.\n";
                         }
                     }
                 }
@@ -214,7 +211,7 @@ public class Parser {
             //beq bne jr j
             else
             {
-                System.out.println("\nError in line " + ProgramCounter + "  Check Instruction name.\n");
+                ErrorMsg = "\nError in line " + ProgramCounter + "  Check Instruction name.\n";
             }
         }
     }
@@ -230,20 +227,18 @@ public class Parser {
             return true;
         }
 
-        // System.out.println("Whta about zero register : " + s.charAt(0));
-
         //Zero Register || $ char nom
         if(((s.charAt(0) == '$')  ) ) //&& !Character.isLetter(s.charAt(1)
         {
             s=s.substring(1);
 
-            //System.out.println("From chaeckregistervalidation s after $ " + s);
+            //ErrorMsg"From chaeckregistervalidation s after $ " + s);
 
             char c = s.charAt(0);
 
             if( s.charAt(0) == 'v' || s.charAt(0) == 'a' || s.charAt(0) == 't' || s.charAt(0) == 's' || s.charAt(0) == 'k')
             {
-                //System.out.println("here");
+                //ErrorMsg"here");
                 s=s.substring(1);
 
                 if(Valid0_1(s , c) || Valid0_3(s,c) || Valid0_7(s,c) || Valid0_9(s,c))
@@ -330,7 +325,7 @@ public class Parser {
 
     public boolean isOffsetsw_lw(String t)
     {
-        System.out.println("t : "+t + " "+t.length());
+        ErrorMsg = "t : "+t + " "+t.length();
 
         String x ="";
         x+=t.charAt(0);
@@ -393,10 +388,10 @@ public class Parser {
                     counter++;
                 }
             }
-            //   System.out.println("From Validate Counter :  " + counter);
+            //   ErrorMsg"From Validate Counter :  " + counter);
             if(counter != nom_of_arguments)
             {
-                System.out.println("\nError in line " + ProgramCounter + "  Check Instruction arguments.\n");
+                ErrorMsg = "\nError in line " + ProgramCounter + "  Check Instruction arguments.\n";
             }
             else
                 parse(Line);
@@ -412,18 +407,17 @@ public class Parser {
                     counter++;
                 }
             }
-            //   System.out.println("From Validate Counter :  " + counter);
+            //   ErrorMsg"From Validate Counter :  " + counter);
             if(counter == nom_of_arguments-1 && isNumber(strarr[3]))
             {
                 parse(Line);
             }
             else
-                System.out.println("\nError in line " + ProgramCounter + "  Check Instruction arguments.\n");
+                ErrorMsg = "\nError in line " + ProgramCounter + "  Check Instruction arguments.\n";
         }
 
         else if(x.equals("ori"))
         {
-            System.out.println(Arrays.toString(strarr));
 
             for (int i = 0; i <nom_of_arguments-2 ; i++)
             {
@@ -437,7 +431,7 @@ public class Parser {
                 parse(Line);
             }
             else
-                System.out.println("\nError in line " + ProgramCounter + "  Check Instruction arguments.\n");
+                ErrorMsg = "\nError in line " + ProgramCounter + "  Check Instruction arguments.\n";
         }
 
         else if (x.equals("sll"))
@@ -447,7 +441,7 @@ public class Parser {
                 parse(Line);
             }
             else
-                System.out.println("\nError in line " + ProgramCounter + "  Check Instruction arguments.\n");
+                ErrorMsg = "\nError in line " + ProgramCounter + "  Check Instruction arguments.\n";
 
         }
     }
@@ -463,7 +457,7 @@ public class Parser {
                 parse(Line);
             }
             else
-                System.out.println("\nError in line " + ProgramCounter + "  Check Instruction arguments.\n");
+                ErrorMsg = "\nError in line " + ProgramCounter + "  Check Instruction arguments.\n";
 
         }
 
@@ -474,7 +468,7 @@ public class Parser {
                 parse(Line);
             }
             else
-                System.out.println("\nError in line " + ProgramCounter + "  Check Instruction arguments.\n");
+                ErrorMsg = "\nError in line " + ProgramCounter + "  Check Instruction arguments.\n";
         }
 
     }
@@ -483,13 +477,12 @@ public class Parser {
     public boolean isHexNumber (String x)
     {
         x = x.substring(2);
-        System.out.println(x);
+
         try {
             Long.parseLong(x, 16);
             return true;
         }
         catch (NumberFormatException ex) {
-            System.out.println("here");
             return false;
         }
     }
