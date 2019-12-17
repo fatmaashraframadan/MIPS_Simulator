@@ -89,10 +89,10 @@ public class Assembler {
     {
         hexa = hexa.substring(2);
         hexa =  new BigInteger(hexa, 16).toString(2);
-       while (hexa.length() < 32)
-       {
-           hexa= "0" + hexa;
-       }
+        while (hexa.length() < 32)
+        {
+            hexa= "0" + hexa;
+        }
         return hexa;
     }
 
@@ -112,9 +112,7 @@ public class Assembler {
         //For GUI Table
         tmp.Type = "R-Type";
         tmp.MachineCode = machine;
-       MachineCode.add(tmp);
-        //System.out.println("machine code is : " + machine);
-        // return machine;
+        MachineCode.add(tmp);
         ob.add(machine);
     }
 
@@ -133,7 +131,6 @@ public class Assembler {
         }
         String machine = "";
         machine = "001000" + " " + get_register_number(parameters[1]) + " " + get_register_number(parameters[0]) + " " + c;
-        System.out.println("machine code is : " + machine);
 
         //For GUI Table
         tmp.Type = "I-Type";
@@ -153,8 +150,6 @@ public class Assembler {
         tmp.Type = "R-Type";
         tmp.MachineCode = machine;
         MachineCode.add(tmp);
-
-       // System.out.println("machine code is : " + machine);
         ob.and(machine);
 
     }
@@ -182,7 +177,6 @@ public class Assembler {
         tmp.MachineCode = machine;
         MachineCode.add(tmp);
 
-      //  System.out.println("machine code is : " + machine);
         ob.andi(machine);
 
     }
@@ -198,9 +192,6 @@ public class Assembler {
         tmp.Type = "R-Type";
         tmp.MachineCode = machine;
         MachineCode.add(tmp);
-
-       // System.out.println("machine code is : " + machine);
-
         ob.slt(machine);
     }
 
@@ -226,8 +217,6 @@ public class Assembler {
         tmp.Type = "I-Type";
         tmp.MachineCode = machine;
         MachineCode.add(tmp);
-
-        //System.out.println("machine code is : " + machine);
         ob.slti(machine);
 
     }
@@ -275,7 +264,6 @@ public class Assembler {
         tmp.MachineCode = machineCode;
         MachineCode.add(tmp);
 
-        System.out.println("Machine Code: " + machineCode);
 
         ob.ori(machineCode , flag);
     }
@@ -284,7 +272,7 @@ public class Assembler {
     public void sll(String[] parameters) { //000000
         int constant = Integer.parseInt(parameters[2]);
         String s = "";
-     s = VirtualMachine.decimal_to_binary(constant);
+        s = VirtualMachine.decimal_to_binary(constant);
         String machineCode = "000000" + " " + get_register_number(parameters[1]) + " " +
                 get_register_number(parameters[0]) + " " + s;
 
@@ -293,7 +281,6 @@ public class Assembler {
         tmp.MachineCode = machineCode;
         MachineCode.add(tmp);
 
-        //System.out.println("Machine Code: " + machineCode);
 
         ob.sll(machineCode);
     }
@@ -307,9 +294,9 @@ public class Assembler {
         for (int i = 0; i < 16; i++) {
             First_16+=""+allBinary.charAt(i);
         }
-        System.out.println("first 16 after conversion: " + First_16);
+
         String machineCode="001111" + " " +"00000"+" "+ get_register_number(parameters[0]) + " " + First_16;
-        System.out.println(machineCode);
+
 
 
         //For GUI Table
@@ -335,16 +322,14 @@ public class Assembler {
         tmp.MachineCode = machineCode;
         MachineCode.add(tmp);
 
-        //System.out.println("Machine Code: " + machineCode);
-
         ob.sub(machineCode);
     }
 
     /**********************************************Loads and stores************************************************/
 
     /*
-    * 	Loads and stores:
-    */
+     * 	Loads and stores:
+     */
     public void lw(String[] parameters) { //100011   //lw $t5 0($t0) 0+0
         String len = "" + parameters[1].charAt(0);
         int offset = Integer.parseInt(len);
@@ -361,8 +346,6 @@ public class Assembler {
         tmp.Type = "I-Type";
         tmp.MachineCode = machineCode;
         MachineCode.add(tmp);
-
-//        System.out.println("Machine Code: " + machineCode);
 
         ob.lw(machineCode);
     }
@@ -393,7 +376,6 @@ public class Assembler {
         tmp.MachineCode = machine;
         MachineCode.add(tmp);
 
-        //System.out.println("machine code is : " + machine);
         ob.sw(machine);
     }
 
@@ -426,8 +408,6 @@ public class Assembler {
         tmp.Type = "J-Type";
         tmp.MachineCode = machineCode;
         MachineCode.add(tmp);
-        //System.out.println("Machine Code: " + machineCode);
-
         ob.j(machineCode);
     }
 
@@ -441,8 +421,6 @@ public class Assembler {
         tmp.Type = "R-Type";
         tmp.MachineCode = machine;
         MachineCode.add(tmp);
-
-        //System.out.println(machine);
         ob.jr(machine);
     }
 
@@ -473,7 +451,6 @@ public class Assembler {
         tmp.MachineCode = machine;
         MachineCode.add(tmp);
 
-        //System.out.println(machine);
         ob.beq(machine);
 
     }
@@ -505,7 +482,6 @@ public class Assembler {
         tmp.MachineCode = machine;
         MachineCode.add(tmp);
 
-        System.out.println(machine);
         ob.bne(machine);
     }
 
