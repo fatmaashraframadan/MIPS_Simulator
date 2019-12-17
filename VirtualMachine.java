@@ -289,7 +289,6 @@ public class VirtualMachine {
         String p1 = RegisterName.get(Parameters[1]);
         String p2 = RegisterName.get(Parameters[2]);
         String p3 = RegisterName.get(Parameters[3]);
-        System.out.println("p1 : " + p1 + "   p2 : " + p2 + "  p3 :  " + p3);
         // String ins_Name = InstructionName.get(Parameters[5]);
 
         String[] tst = {p1, p2, p3};
@@ -312,10 +311,10 @@ public class VirtualMachine {
                 constant += Math.pow(2, i);
             }
         }
-        System.out.println(constant);
+
 
         String p3 = String.valueOf(constant);
-        System.out.println("p1 : " + p2 + "   p2 : " + p1 + "  p3 :  " + p3);
+
         // String ins_Name = InstructionName.get(Parameters[5]);
 
         String[] tst = {p2, p1, p3};// the destination is p2 and the values is p1 and p3
@@ -336,12 +335,12 @@ public class VirtualMachine {
      */
 
     //10
-  public void add(String machincode) {
+    public void add(String machincode) {
         String[] parameters = RType_MachineCodeToText(machincode);
 
         int r1 = get_register(parameters[1]);
         int r2 = get_register(parameters[2]);
-        System.out.println(r1 + "  " + r2);
+
 //memory add -- val
         // for memory
         // 5000
@@ -354,19 +353,16 @@ public class VirtualMachine {
         }
 
         set_register(parameters[0], r1 + r2);
-
-        System.out.println("Result : " + get_register(parameters[0]));
-
     }
 
     public void addi(String machincode) {
 
         String[] parameters = IType_MachineCodeToText(machincode);
-        System.out.println(Arrays.toString(parameters));
+
         int r1 = get_register(parameters[1]);
-        System.out.println("r1 : " +r1);
+
         if (r1 >= memory_address) {// md const value get the first address in memory=100000
-            System.out.println("here : "  + r1);
+
             r1 = binary_to_decimal(Memory.memorydata[r1-memory_address]); // md const value get the first address in memory=100000
         }
 
@@ -394,9 +390,7 @@ public class VirtualMachine {
         // System.out.println(r1+" "+r2);
 
         set_register(parameters[0], r1 & r2);
-        System.out.println("Result : " + get_register(parameters[0]));
-
-    }
+     }
 
     // add $t0 $s1 5
     // add $t0 $0 3
@@ -409,10 +403,9 @@ public class VirtualMachine {
             r1 = binary_to_decimal(Memory.memorydata[r1-memory_address]); // md const value get the first address in memory=100000
         }
 
-        // System.out.println(r1+" "+Integer.parseInt(parameters[2]));
         int constant = Integer.parseInt(parameters[2]);
         set_register(parameters[0], r1 & constant);
-        System.out.println("Result : "  + get_register(parameters[0]));
+
     }
 
     public void slt(String machincode) {
@@ -462,7 +455,6 @@ public class VirtualMachine {
         int reg1 = get_register(parameters[1]);
         int reg2 = get_register(parameters[2]);
 
-        System.out.println("Reg1 : " + reg1 + " ... Reg2: " + reg2);
 
         if (reg1 >= memory_address)
             reg1 = binary_to_decimal(Memory.memorydata[reg1]);
@@ -470,7 +462,6 @@ public class VirtualMachine {
             reg2 = binary_to_decimal(Memory.memorydata[reg2]);
         set_register(parameters[0], reg1 - reg2);
 
-        System.out.println("Result: " + get_register(parameters[0]));
     }
 
     //For or
@@ -479,7 +470,6 @@ public class VirtualMachine {
         int reg1 = get_register(parameters[1]);
         int reg2 = get_register(parameters[2]);
 
-        System.out.println("Reg1 : " + reg1 + " ... Reg2: " + reg2);
 
         if (reg1 >= memory_address)
             reg1 = binary_to_decimal(Memory.memorydata[reg1]);
@@ -487,10 +477,9 @@ public class VirtualMachine {
             reg2 = binary_to_decimal(Memory.memorydata[reg2]);
         set_register(parameters[0], reg1 | reg2);
 
-        System.out.println("Result: " + get_register(parameters[0]));
     }
 
-  
+
     //For ori $t0 $t1 5
     public void ori(String machineCode , boolean flag){
 
@@ -500,34 +489,22 @@ public class VirtualMachine {
         {
             int reg1 = get_register(parameters[1]);
             int constNum = Integer.parseInt(parameters[2]);
-
-            System.out.println("Reg1 : " + reg1 + " ... Reg2: " + constNum);
-
             set_register(parameters[0], reg1 | constNum);
         }
-        else
-        {
+        else {
             String d = decimal_to_binary(get_register(parameters[0]));
 
             String s = d + decimal_to_binary(Integer.parseInt(parameters[2]));
 
-           // System.out.println(binary_to_decimal(s));
-            System.out.println("s : " + s);
             int x = binary_to_decimal(s);
-            System.out.println(x);
-
-            System.out.println(get_register(parameters[0]));
-            set_register(parameters[0] , (x+memory_address));//Address Decimal
-
-            System.out.println("$t0 : " +get_register(parameters[0]));
+            set_register(parameters[0], (x + memory_address));//Address Decimal
         }
-        System.out.println("Result: " + get_register(parameters[0]));
     }
 
     //For shift left logical
     public void sll(String machineCode){
         String[] parameters = IType_MachineCodeToText(machineCode);
-        System.out.println(Arrays.toString(parameters));
+
 
         int reg1 = get_register(parameters[1]);
         int constNum = Integer.parseInt(parameters[2]);
@@ -542,10 +519,10 @@ public class VirtualMachine {
     //Load Upper Immediate
     public void lui(String machineCode)
     {
-        System.out.println(machineCode);
+
         String[] parameters = IType_MachineCodeToText(machineCode);
         set_register(parameters[0] , Integer.parseInt(parameters[2]));//Address Decimal
-        System.out.println(parameters[0]);
+
     }
 
 
@@ -564,9 +541,8 @@ public class VirtualMachine {
         int offset = Integer.parseInt(parameters[2]);
         int idx = (reg1) + (offset/4) - memory_address ;
 
-        System.out.println("paramter : " + get_register(parameters[0]) + "    " + Memory.memorydata[idx]);
         set_register(parameters[0], binary_to_decimal(Memory.memorydata[idx]));
-        System.out.println("here : "  +get_register(parameters[0]));
+
     }
 
     // sw $s0, 4($s1)
@@ -574,9 +550,9 @@ public class VirtualMachine {
     public void sw(String machincode) {
 
         String[] parameters = IType_MachineCodeToText(machincode);
-        System.out.println(parameters[1]);
+
         int r1 = get_register(parameters[1]);
-        System.out.println(r1);//4101
+
 
         int r2 = get_register(parameters[0]);
         int offist = Integer.parseInt(parameters[2]);
@@ -584,7 +560,7 @@ public class VirtualMachine {
 
         // System.out.println(r1+" "+r2+" "+len);
         Memory.memorydata[index] = decimal_to_binary(r2);
-        System.out.println(Memory.memorydata[index]);
+
     }
 
 
@@ -612,7 +588,6 @@ public class VirtualMachine {
         }
 
         Parser.ProgramCounter = r1;
-        System.out.println("Name : " + Parameters[0] + "     " + "PrpgramCouter : " + Parser.ProgramCounter + "   " + "NewAddress : " + (r1));
     }
 
 
@@ -621,7 +596,7 @@ public class VirtualMachine {
 
         int r1 = get_register(parameters[0]);
         int r2 = get_register(parameters[1]);
-        System.out.println(r1 + "  " + r2);
+
 
         // for memory
         if (r1 >= memory_address) {// md const value get the first address in memory=100000
@@ -636,9 +611,6 @@ public class VirtualMachine {
             Parser.ProgramCounter = Integer.parseInt(parameters[2]);
         }
 
-        System.out.println("Program : " + Parser.ProgramCounter);
-        System.out.println("Result : " + get_register(parameters[0]));
-
     }
 
     public void beq(String machincode) {
@@ -646,8 +618,6 @@ public class VirtualMachine {
 
         int r1 = get_register(parameters[0]);
         int r2 = get_register(parameters[1]);
-
-        System.out.println(r1 + "  " + r2);
 
         // for memory
         if (r1 >= memory_address) {// md const value get the first address in memory=100000
@@ -662,7 +632,5 @@ public class VirtualMachine {
             Parser.ProgramCounter = Integer.parseInt(parameters[2]);
         }
 
-        System.out.println("Program Counter : " + Parser.ProgramCounter);
-        System.out.println("Result : " + get_register(parameters[0]));
     }
 }
