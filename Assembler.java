@@ -1,19 +1,15 @@
-//package sample;
+package sample;
 
-import javafx.scene.layout.Pane;
-
-import java.lang.reflect.Parameter;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class Assembler {
 
     static VirtualMachine ob = new VirtualMachine();
     //For GUI Table
-    static public ArrayList<Instruction>MachineCode = new ArrayList<>();
-    static  Instruction tmp = new Instruction();
+    static public ArrayList<Instruction> MachineCode = new ArrayList<>();
+    static Instruction tmp = new Instruction();
 
 
     static String get_register_number(String parameter) {
@@ -85,14 +81,13 @@ public class Assembler {
 
     }
 
-    public static String Hexa_to_Binary(String hexa)
-    {
+    public static String Hexa_to_Binary(String hexa) {
         hexa = hexa.substring(2);
-        hexa =  new BigInteger(hexa, 16).toString(2);
-        while (hexa.length() < 32)
-        {
-            hexa= "0" + hexa;
+        StringBuilder hexaBuilder = new StringBuilder(new BigInteger(hexa, 16).toString(2));
+        while (hexaBuilder.length() < 32) {
+            hexaBuilder.insert(0, "0");
         }
+        hexa = hexaBuilder.toString();
         return hexa;
     }
 
@@ -120,12 +115,12 @@ public class Assembler {
     // add $t0 $0 3
     public void addi(String[] parameters) {
         int constant = Integer.parseInt(parameters[2]);
-        String c = "";
+        StringBuilder c = new StringBuilder();
         for (int i = 0; i < 16; i++) {
             if (constant % 2 == 0) {
-                c = "0" + c;
+                c.insert(0, "0");
             } else {
-                c = "1" + c;
+                c.insert(0, "1");
             }
             constant /= 2;
         }
@@ -159,12 +154,12 @@ public class Assembler {
     // add $t0 $0 3
     public void andi(String[] parameters) {
         int constant = Integer.parseInt(parameters[2]);
-        String c = "";
+        StringBuilder c = new StringBuilder();
         for (int i = 0; i < 16; i++) {
             if (constant % 2 == 0) {
-                c = "0" + c;
+                c.insert(0, "0");
             } else {
-                c = "1" + c;
+                c.insert(0, "1");
             }
             constant /= 2;
         }
@@ -200,12 +195,12 @@ public class Assembler {
 
         int constant = Integer.parseInt(parameters[2]);
 
-        String c = "";
+        StringBuilder c = new StringBuilder();
         for (int i = 0; i < 16; i++) {
             if (constant % 2 == 0) {
-                c = "0" + c;
+                c.insert(0, "0");
             } else {
-                c = "1" + c;
+                c.insert(0, "1");
             }
             constant /= 2;
         }
@@ -239,20 +234,16 @@ public class Assembler {
     public void ori(String[] parameters) {
         String machineCode = "";
         boolean flag = false;
-        String code = "";
-        if(parameters[2].charAt(0)!='0' && parameters[2].charAt(1) != 'x')
-        {
+        StringBuilder code = new StringBuilder();
+        if (parameters[2].charAt(0) != '0' && parameters[2].charAt(1) != 'x') {
             int constant = Integer.parseInt(parameters[2]);
-            code = VirtualMachine.decimal_to_binary(constant);
-        }
-        else
-        {
-            flag =true;
+            code = new StringBuilder(VirtualMachine.decimal_to_binary(constant));
+        } else {
+            flag = true;
             String allBinary = Hexa_to_Binary(parameters[2]); //16 bit
             System.out.println("length : " + allBinary.length());
-            for (int i = 16; i < 32; i++)
-            {
-                code+=""+allBinary.charAt(i);
+            for (int i = 16; i < 32; i++) {
+                code.append("").append(allBinary.charAt(i));
             }
         }
         //ari $t2 $t0 10
@@ -265,7 +256,7 @@ public class Assembler {
         MachineCode.add(tmp);
 
 
-        ob.ori(machineCode , flag);
+        ob.ori(machineCode, flag);
     }
 
     //For Shift Logical Left
@@ -288,15 +279,14 @@ public class Assembler {
     //0x00055 -- First 16 bit -- Most significant bits.
     public void lui(String[] parameters) {
         String allBinary = Hexa_to_Binary(parameters[1]);
-        String First_16 = "";
+        StringBuilder First_16 = new StringBuilder();
 
         System.out.println("all binary : " + allBinary);
         for (int i = 0; i < 16; i++) {
-            First_16+=""+allBinary.charAt(i);
+            First_16.append("").append(allBinary.charAt(i));
         }
 
-        String machineCode="001111" + " " +"00000"+" "+ get_register_number(parameters[0]) + " " + First_16;
-
+        String machineCode = "001111" + " " + "00000" + " " + get_register_number(parameters[0]) + " " + First_16;
 
 
         //For GUI Table
@@ -357,12 +347,12 @@ public class Assembler {
 
         int offist = Integer.parseInt(len);
 
-        String c = "";
+        StringBuilder c = new StringBuilder();
         for (int i = 0; i < 16; i++) {
             if (offist % 2 == 0) {
-                c = "0" + c;
+                c.insert(0, "0");
             } else {
-                c = "1" + c;
+                c.insert(0, "1");
             }
             offist /= 2;
         }
@@ -380,7 +370,6 @@ public class Assembler {
     }
 
 
-
     /**********************************************Branches/jumps************************************************/
     /*
      *  Branches/jumps:
@@ -388,15 +377,15 @@ public class Assembler {
     //j label
     public void j(String[] parameters) {
         int index = Parser.Labels.get(parameters[0]);
-        String c = "";// binary of label instruction index.
+        StringBuilder c = new StringBuilder();// binary of label instruction index.
 
         // Convert decimal to binary
         // 16-bit for index
         for (int i = 0; i < 16; i++) {
             if (index % 2 == 0) {
-                c = "0" + c;
+                c.insert(0, "0");
             } else {
-                c = "1" + c;
+                c.insert(0, "1");
             }
             index /= 2;
         }
@@ -412,10 +401,9 @@ public class Assembler {
     }
 
     // Jump register Instruction. --- go to the address stored in register ---- Rtype Instruction.
-    public void jr(String[] parameters)
-    {
-        String x =get_register_number(parameters[0]);
-        String machine ="000000"+" "+ x+" "+"00000" + " " + "00000"+" " +"00000"+" " +"001000";
+    public void jr(String[] parameters) {
+        String x = get_register_number(parameters[0]);
+        String machine = "000000" + " " + x + " " + "00000" + " " + "00000" + " " + "00000" + " " + "001000";
 
         //For GUI Table
         tmp.Type = "R-Type";
@@ -427,15 +415,15 @@ public class Assembler {
     // beq $t0 $0 l
     public void beq(String[] parameters) {
         int index = Parser.Labels.get(parameters[2]);
-        String c = "";// binary of label instruction index.
+        StringBuilder c = new StringBuilder();// binary of label instruction index.
 
         // Convert decimal to binary
         // 16-bit for index
         for (int i = 0; i < 16; i++) {
             if (index % 2 == 0) {
-                c = "0" + c;
+                c.insert(0, "0");
             } else {
-                c = "1" + c;
+                c.insert(0, "1");
             }
             index /= 2;
         }
@@ -458,15 +446,15 @@ public class Assembler {
     // add $t0 $0 $0
     public void bne(String[] parameters) {
         int index = Parser.Labels.get(parameters[2]);
-        String c = "";// binary of label instruction index.
+        StringBuilder c = new StringBuilder();// binary of label instruction index.
 
         // Convert decimal to binary
         // 16-bit for index
         for (int i = 0; i < 16; i++) {
             if (index % 2 == 0) {
-                c = "0" + c;
+                c.insert(0, "0");
             } else {
-                c = "1" + c;
+                c.insert(0, "1");
             }
             index /= 2;
         }
