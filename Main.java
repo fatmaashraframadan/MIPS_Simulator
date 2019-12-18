@@ -11,7 +11,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("MIPS Assembler");
+        primaryStage.setTitle("Pure MIPS Code Assembler");
         primaryStage.setScene(new Scene(root, 880, 600));
         primaryStage.show();
     }
