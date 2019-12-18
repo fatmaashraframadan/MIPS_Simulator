@@ -1,14 +1,12 @@
-//package sample;
+package sample;
 
-
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class VirtualMachine {
     //‭7FFFEFFF‬
     final static int memory_address = 4096;
-    static Registers r = new Registers();
+    static Registers register1 = new Registers();
 
     static Map<String, String> InstructionName = new HashMap<>();
     static Map<String, String> RegisterName = new HashMap<>();
@@ -120,66 +118,159 @@ public class VirtualMachine {
     static void set_register(String parameter, int value) {
         if (parameter.equals("$at")) {
             Registers.r_$at = value;
-        } else if (parameter.equals("$v0")) {
+            int idx = register1.searchReg("$at");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$v0")) {
             Registers.r_$v0 = value;
-        } else if (parameter.equals("$v1")) {
+            int idx = register1.searchReg("$v0");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$v1")) {
             Registers.r_$v1 = value;
-        } else if (parameter.equals("$a0")) {
+            int idx = register1.searchReg("$v1");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$a0")) {
             Registers.r_$a0 = value;
-        } else if (parameter.equals("$a1")) {
+            int idx = register1.searchReg("$a0");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$a1")) {
             Registers.r_$a1 = value;
-        } else if (parameter.equals("$a2")) {
+            int idx = register1.searchReg("$a1");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$a2")) {
             Registers.r_$a2 = value;
-        } else if (parameter.equals("$a3")) {
+            int idx = register1.searchReg("$a2");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$a3")) {
             Registers.r_$a3 = value;
-        } else if (parameter.equals("$t0")) {
+            int idx = register1.searchReg("$a3");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$t0")) {
             Registers.r_$t0 = value;
-        } else if (parameter.equals("$t1")) {
+            int idx = register1.searchReg("$t0");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$t1")) {
             Registers.r_$t1 = value;
-        } else if (parameter.equals("$t2")) {
+            int idx = register1.searchReg("$t1");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$t2")) {
             Registers.r_$t2 = value;
-        } else if (parameter.equals("$t3")) {
+            int idx = register1.searchReg("$t2");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$t3")) {
             Registers.r_$t3 = value;
-        } else if (parameter.equals("$t4")) {
+            int idx = register1.searchReg("$t3");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$t4")) {
             Registers.r_$t4 = value;
-        } else if (parameter.equals("$t5")) {
+            int idx = register1.searchReg("$t4");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$t5")) {
             Registers.r_$t5 = value;
-        } else if (parameter.equals("$t6")) {
+            int idx = register1.searchReg("$t5");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$t6")) {
             Registers.r_$t6 = value;
-        } else if (parameter.equals("$t7")) {
+            int idx = register1.searchReg("$t6");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$t7")) {
             Registers.r_$t7 = value;
-        } else if (parameter.equals("$s0")) {
+            int idx = register1.searchReg("$t7");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$s0")) {
             Registers.r_$s0 = value;
-        } else if (parameter.equals("$s1")) {
+            int idx = register1.searchReg("$s0");
+            Registers.values.set(idx, value);
+            System.out.println(Registers.values.get(idx));
+        }
+        else if (parameter.equals("$s1")) {
             Registers.r_$s1 = value;
-        } else if (parameter.equals("$s2")) {
+            int idx = register1.searchReg("$s1");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$s2")) {
             Registers.r_$s2 = value;
-        } else if (parameter.equals("$s3")) {
+            int idx = register1.searchReg("$s2");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$s3")) {
             Registers.r_$s3 = value;
-        } else if (parameter.equals("$s4")) {
+            int idx = register1.searchReg("$s3");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$s4")) {
             Registers.r_$s4 = value;
-        } else if (parameter.equals("$s5")) {
+            int idx = register1.searchReg("$at");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$s5")) {
             Registers.r_$s5 = value;
-        } else if (parameter.equals("$s6")) {
+            int idx = register1.searchReg("$s5");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$s6")) {
             Registers.r_$s6 = value;
-        } else if (parameter.equals("$s7")) {
+            int idx = register1.searchReg("$s6");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$s7")) {
             Registers.r_$s7 = value;
-        } else if (parameter.equals("$t8")) {
+            int idx = register1.searchReg("$s7");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$t8")) {
             Registers.r_$t8 = value;
-        } else if (parameter.equals("$t9")) {
+            int idx = register1.searchReg("$t8");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$t9")) {
             Registers.r_$t9 = value;
-        } else if (parameter.equals("$k0")) {
+            int idx = register1.searchReg("$t9");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$k0")) {
             Registers.r_$k0 = value;
-        } else if (parameter.equals("$k1")) {
+            int idx = register1.searchReg("$k0");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$k1")) {
             Registers.r_$k1 = value;
-        } else if (parameter.equals("$gp")) {
+            int idx = register1.searchReg("$k1");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$gp")) {
             Registers.r_$gp = value;
-        } else if (parameter.equals("$sp")) {
+            int idx = register1.searchReg("$gp");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$sp")) {
             Registers.r_$sp = value;
-        } else if (parameter.equals("$fp")) {
+            int idx = register1.searchReg("$sp");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$fp")) {
             Registers.r_$fp = value;
-        } else if (parameter.equals("$ra")) {
+            int idx = register1.searchReg("$fp");
+            Registers.values.set(idx, value);
+        }
+        else if (parameter.equals("$ra")) {
             Registers.r_$ra = value;
+            int idx = register1.searchReg("$ra");
+            Registers.values.set(idx, value);
         }
 
     }
@@ -255,10 +346,10 @@ public class VirtualMachine {
 
     //Convert Binary to Decimal.
     static int binary_to_decimal(String binary) {
-        String temp = "";
+        StringBuilder temp = new StringBuilder();
         int decimal = 0;
         for (int i = 0; i < binary.length(); i++) { // for reverse the binary
-            temp = "" + binary.charAt(i) + temp;
+            temp.insert(0, "" + binary.charAt(i));
         }
         for (int i = 0; i < temp.length(); i++) {  // for get the integer value of the constant binary
             if (temp.charAt(i) == '1') {
@@ -270,16 +361,16 @@ public class VirtualMachine {
 
     //Convert Decimal to Binary.
     static String decimal_to_binary(int decimal) {
-        String c = "";
+        StringBuilder c = new StringBuilder();
         for (int i = 0; i < 16; i++) {
             if (decimal % 2 == 0) {
-                c = "0" + c;
+                c.insert(0, "0");
             } else {
-                c = "1" + c;
+                c.insert(0, "1");
             }
             decimal /= 2;
         }
-        return c;
+        return c.toString();
     }
 
 
@@ -302,9 +393,9 @@ public class VirtualMachine {
         String p1 = RegisterName.get(Parameters[1]);
         String p2 = RegisterName.get(Parameters[2]);
         int constant = 0;
-        String temp = "";
+        StringBuilder temp = new StringBuilder();
         for (int i = 0; i < Parameters[3].length(); i++) { // for reverse the binary
-            temp = "" + Parameters[3].charAt(i) + temp;
+            temp.insert(0, "" + Parameters[3].charAt(i));
         }
         for (int i = 0; i < temp.length(); i++) { // for get the integer value of the constant binary
             if (temp.charAt(i) == '1') {
@@ -346,10 +437,10 @@ public class VirtualMachine {
         // 5000
         if (r1 >= memory_address) {// md const value get the first address in memory=100000
 
-            r1 = binary_to_decimal(Memory.memorydata[r1-memory_address]); // md const value get the first address in memory=100000
+            r1 = binary_to_decimal(Memory.memorydata[r1 - memory_address]); // md const value get the first address in memory=100000
         }
         if (r2 >= memory_address) {
-            r2 = binary_to_decimal(Memory.memorydata[r2-memory_address]);
+            r2 = binary_to_decimal(Memory.memorydata[r2 - memory_address]);
         }
 
         set_register(parameters[0], r1 + r2);
@@ -363,7 +454,7 @@ public class VirtualMachine {
 
         if (r1 >= memory_address) {// md const value get the first address in memory=100000
 
-            r1 = binary_to_decimal(Memory.memorydata[r1-memory_address]); // md const value get the first address in memory=100000
+            r1 = binary_to_decimal(Memory.memorydata[r1 - memory_address]); // md const value get the first address in memory=100000
         }
 
         int constant = Integer.parseInt(parameters[2]);
@@ -381,16 +472,16 @@ public class VirtualMachine {
 
         if (r1 >= memory_address) {// md const value get the first address in memory=100000
 
-            r1 = binary_to_decimal(Memory.memorydata[r1-memory_address]); // md const value get the first address in memory=100000
+            r1 = binary_to_decimal(Memory.memorydata[r1 - memory_address]); // md const value get the first address in memory=100000
         }
         if (r2 >= memory_address) {
-            r2 = binary_to_decimal(Memory.memorydata[r2-memory_address]);
+            r2 = binary_to_decimal(Memory.memorydata[r2 - memory_address]);
         }
 
         // System.out.println(r1+" "+r2);
 
         set_register(parameters[0], r1 & r2);
-     }
+    }
 
     // add $t0 $s1 5
     // add $t0 $0 3
@@ -400,7 +491,7 @@ public class VirtualMachine {
         int r1 = get_register(parameters[1]);
         if (r1 >= memory_address) {// md const value get the first address in memory=100000
 
-            r1 = binary_to_decimal(Memory.memorydata[r1-memory_address]); // md const value get the first address in memory=100000
+            r1 = binary_to_decimal(Memory.memorydata[r1 - memory_address]); // md const value get the first address in memory=100000
         }
 
         int constant = Integer.parseInt(parameters[2]);
@@ -415,10 +506,10 @@ public class VirtualMachine {
         int r2 = get_register(parameters[2]);
         if (r1 >= memory_address) {// md const value get the first address in memory=100000
 
-            r1 = binary_to_decimal(Memory.memorydata[r1-memory_address]); // md const value get the first address in memory=100000
+            r1 = binary_to_decimal(Memory.memorydata[r1 - memory_address]); // md const value get the first address in memory=100000
         }
         if (r2 >= memory_address) {
-            r2 = binary_to_decimal(Memory.memorydata[r2-memory_address]);
+            r2 = binary_to_decimal(Memory.memorydata[r2 - memory_address]);
         }
 
         // System.out.println(r1+" "+r2);
@@ -435,7 +526,7 @@ public class VirtualMachine {
         int r1 = get_register(parameters[1]);
         if (r1 >= memory_address) {// md const value get the first address in memory=100000
 
-            r1 = binary_to_decimal(Memory.memorydata[r1-memory_address]); // md const value get the first address in memory=100000
+            r1 = binary_to_decimal(Memory.memorydata[r1 - memory_address]); // md const value get the first address in memory=100000
         }
 
         int constant = Integer.parseInt(parameters[2]);
@@ -465,7 +556,7 @@ public class VirtualMachine {
     }
 
     //For or
-    public void or(String machineCode){
+    public void or(String machineCode) {
         String[] parameters = RType_MachineCodeToText(machineCode);
         int reg1 = get_register(parameters[1]);
         int reg2 = get_register(parameters[2]);
@@ -481,17 +572,15 @@ public class VirtualMachine {
 
 
     //For ori $t0 $t1 5
-    public void ori(String machineCode , boolean flag){
+    public void ori(String machineCode, boolean flag) {
 
         String[] parameters = IType_MachineCodeToText(machineCode);
         //ori $t0 $t1 10
-        if(!flag)
-        {
+        if (!flag) {
             int reg1 = get_register(parameters[1]);
             int constNum = Integer.parseInt(parameters[2]);
             set_register(parameters[0], reg1 | constNum);
-        }
-        else {
+        } else {
             String d = decimal_to_binary(get_register(parameters[0]));
 
             String s = d + decimal_to_binary(Integer.parseInt(parameters[2]));
@@ -502,7 +591,7 @@ public class VirtualMachine {
     }
 
     //For shift left logical
-    public void sll(String machineCode){
+    public void sll(String machineCode) {
         String[] parameters = IType_MachineCodeToText(machineCode);
 
 
@@ -517,11 +606,10 @@ public class VirtualMachine {
     }
 
     //Load Upper Immediate
-    public void lui(String machineCode)
-    {
+    public void lui(String machineCode) {
 
         String[] parameters = IType_MachineCodeToText(machineCode);
-        set_register(parameters[0] , Integer.parseInt(parameters[2]));//Address Decimal
+        set_register(parameters[0], Integer.parseInt(parameters[2]));//Address Decimal
 
     }
 
@@ -532,14 +620,14 @@ public class VirtualMachine {
      */
 
     //For Load Word
-    public void lw(String machineCode){
+    public void lw(String machineCode) {
         //lw $t5 0($t0)
         String[] parameters = IType_MachineCodeToText(machineCode);
 
         int reg1 = get_register(parameters[1]);
         //  int reg2 = get_register(parameters[0]);
         int offset = Integer.parseInt(parameters[2]);
-        int idx = (reg1) + (offset/4) - memory_address ;
+        int idx = (reg1) + (offset / 4) - memory_address;
 
         set_register(parameters[0], binary_to_decimal(Memory.memorydata[idx]));
 
@@ -556,13 +644,12 @@ public class VirtualMachine {
 
         int r2 = get_register(parameters[0]);
         int offist = Integer.parseInt(parameters[2]);
-        int index = (r1-memory_address) + offist / 4;
+        int index = (r1 - memory_address) + offist / 4;
 
         // System.out.println(r1+" "+r2+" "+len);
         Memory.memorydata[index] = decimal_to_binary(r2);
 
     }
-
 
 
     /**********************************************Branches/jumps************************************************/
@@ -571,20 +658,19 @@ public class VirtualMachine {
      */
 
     //Jump instruction
-    public void j(String machineCode){
+    public void j(String machineCode) {
         String[] parameters = machineCode.split(" ");
         int x = binary_to_decimal(parameters[1]);
         Parser.ProgramCounter = x;
     }
 
-    public void jr(String machincode)
-    {
+    public void jr(String machincode) {
         String[] Parameters = RType_MachineCodeToText(machincode);
 
         int r1 = get_register(Parameters[0]);               //jr $t0 -- 5   5000
 
         if (r1 >= memory_address) {                         // md const value get the first address in memory=100000
-            r1 = binary_to_decimal(Memory.memorydata[r1-memory_address]);  // md const value get the first address in memory=100000
+            r1 = binary_to_decimal(Memory.memorydata[r1 - memory_address]);  // md const value get the first address in memory=100000
         }
 
         Parser.ProgramCounter = r1;
@@ -601,10 +687,10 @@ public class VirtualMachine {
         // for memory
         if (r1 >= memory_address) {// md const value get the first address in memory=100000
 
-            r1 = binary_to_decimal(Memory.memorydata[r1-memory_address]); // md const value get the first address in memory=100000
+            r1 = binary_to_decimal(Memory.memorydata[r1 - memory_address]); // md const value get the first address in memory=100000
         }
         if (r2 >= memory_address) {
-            r2 = binary_to_decimal(Memory.memorydata[r2-memory_address]);
+            r2 = binary_to_decimal(Memory.memorydata[r2 - memory_address]);
         }
 
         if (r1 != r2) {
@@ -622,10 +708,10 @@ public class VirtualMachine {
         // for memory
         if (r1 >= memory_address) {// md const value get the first address in memory=100000
 
-            r1 = binary_to_decimal(Memory.memorydata[r1-memory_address]); // md const value get the first address in memory=100000
+            r1 = binary_to_decimal(Memory.memorydata[r1 - memory_address]); // md const value get the first address in memory=100000
         }
         if (r2 >= memory_address) {
-            r2 = binary_to_decimal(Memory.memorydata[r2-memory_address]);
+            r2 = binary_to_decimal(Memory.memorydata[r2 - memory_address]);
         }
 
         if (r1 == r2) {
